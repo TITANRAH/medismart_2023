@@ -1,4 +1,4 @@
-import 'package:medismart_2023/domain/entities/user_home_services.dart';
+import 'package:medismart_2023/domain/entities/user-entity/user_home_services.dart';
 
 
 class User {

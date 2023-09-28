@@ -1,19 +1,22 @@
-
 import 'package:go_router/go_router.dart';
-import 'package:medismart_2023/presentation/screens/home_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../presentation/screens/screens.dart';
 
 part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
-  return GoRouter(
-    initialLocation: '/',
-    routes: [
+  return GoRouter(initialLocation: '/login', routes: [
     GoRoute(
-      path: '/',
+      path: '/home-screen',
       name: HomeScreen.name,
       builder: (context, state) => HomeScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: LoginScreen.name,
+      builder: (context, state) => const LoginScreen(),
     ),
   ]);
 }

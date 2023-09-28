@@ -34,5 +34,20 @@ final userActiveProvider = NotifierProvider<UserActive, User>.internal(
 );
 
 typedef _$UserActive = Notifier<User>;
+String _$isLoadingHash() => r'9bea8d73f8f495d622f6651aa4b9c5bc70ae6c70';
+
+/// See also [IsLoading].
+@ProviderFor(IsLoading)
+final isLoadingProvider =
+    AutoDisposeNotifierProvider<IsLoading, dynamic>.internal(
+  IsLoading.new,
+  name: r'isLoadingProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$isLoadingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IsLoading = AutoDisposeNotifier<dynamic>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:medismart_2023/domain/entities/user.dart';
+import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 import 'package:medismart_2023/domain/infrastructure/datasources/user_response_datasource.dart';
 import 'package:medismart_2023/domain/infrastructure/mappers/user_mapper.dart';
 import 'package:medismart_2023/domain/infrastructure/models/user/user_response.dart';

@@ -59,9 +59,6 @@ class _ServicesListState extends ConsumerState<_ServicesList> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
-      ref.read(userActiveProvider.notifier).getUser('17869526-6', '178695');
-    });
   }
 
   @override
@@ -69,9 +66,6 @@ class _ServicesListState extends ConsumerState<_ServicesList> {
     final colors = Theme.of(context).colorScheme;
     final userServices = ref.watch(servicesProvider);
 
-    // if (userServices == null) {
-    //   return const Center(child: Center(child: CircularProgressIndicator()));
-    // }
     return userServices.when(
       data: (services) {
         return ListView.builder(
@@ -94,7 +88,7 @@ class _ServicesListState extends ConsumerState<_ServicesList> {
           backgroundColor: colors.secondary,
         ),
       ), // Otra acción cuando está cargando.
-      error: (error, stackTrace) => Text('Error: $error'), // Manejo de errores.
+      error: (error, stackTrace) => Text('Error: $error'), // Manejo de errores
     );
   }
 }
@@ -127,7 +121,7 @@ class _CardService extends StatelessWidget {
             Radius.circular(12),
           ),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
         elevation: 1,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(60, 20, 40, 20),
@@ -136,8 +130,8 @@ class _CardService extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 icon!,
-                width: 45,
-                height: 45,
+                width: 60,
+                height: 60,
               ),
               Text(
                 text!.toUpperCase(),

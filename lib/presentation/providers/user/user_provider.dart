@@ -1,7 +1,7 @@
 import 'package:medismart_2023/config/utils/utils.dart';
 import 'package:medismart_2023/domain/datasources/user_datasource.dart';
-import 'package:medismart_2023/domain/entities/user.dart';
-import 'package:medismart_2023/domain/entities/user_home_services.dart';
+import 'package:medismart_2023/domain/entities/user-entity/user.dart';
+import 'package:medismart_2023/domain/entities/user-entity/user_home_services.dart';
 import 'package:medismart_2023/domain/infrastructure/repositories/user_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,20 +22,35 @@ class UserActive extends _$UserActive {
     state = user;
     print('USER DESDE PROVIDER $state');
   }
-
 }
 
 @Riverpod(keepAlive: true)
 Future<List<UserHomeServices>> services(ServicesRef ref) async {
   final user = ref.watch(userActiveProvider);
   final List<UserHomeServices> servicesList = [];
- if (user.homeServices == null) return [];
+  if (user.homeServices == null) return [];
 
-    for (var s in serviceOrder) {
-      for (var h in user.homeServices!) {
-        if (s == h.cod) servicesList.add(h);
-      }
+  for (var s in serviceOrder) {
+    for (var h in user.homeServices!) {
+      if (s == h.cod) servicesList.add(h);
     }
+  }
 
   return servicesList;
+}
+
+@riverpod
+class IsLoading extends _$IsLoading {
+  
+  @override
+  build() {
+    return false;
+  }
+
+  void isTrue() {
+    state = true;
+  }
+  void isFalse() {
+    state = false;
+  }
 }

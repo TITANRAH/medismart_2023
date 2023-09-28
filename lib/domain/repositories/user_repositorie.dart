@@ -1,5 +1,5 @@
 
-import 'package:medismart_2023/domain/entities/user.dart';
+import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 
 // la diferencia es que los repositorios llaman al datasource
 // si cambiara el origen de datos cambio datasouyrce pero el repositorio no

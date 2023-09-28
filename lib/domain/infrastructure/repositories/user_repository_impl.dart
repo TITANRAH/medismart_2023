@@ -1,6 +1,6 @@
 
 import 'package:medismart_2023/domain/datasources/user_datasource.dart';
-import 'package:medismart_2023/domain/entities/user.dart';
+import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 import 'package:medismart_2023/domain/repositories/user_repositorie.dart';
 
 class UserRepositoryImpl extends UserRepository {
