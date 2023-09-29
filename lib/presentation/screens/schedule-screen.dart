@@ -66,8 +66,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                       child: _BoxService(
                         iconBox: './assets/svg/icon_tuplanempresa_g.svg',
                         textService: 'TU PLAN EMPRESA',
-                        isActiveBox:
-                            widget.tipoServicio == 'S' ? true : false,
+                        isActiveBox: widget.tipoServicio == 'S' ? true : false,
                         height: 70,
                         width: 70,
                       ),
@@ -77,8 +76,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                       child: _BoxService(
                         iconBox: './assets/svg/medicina-especialista.svg',
                         textService: 'MEDICINA ESPECIALISTA',
-                        isActiveBox:
-                            widget.tipoServicio == 'O' ? true : false,
+                        isActiveBox: widget.tipoServicio == 'O' ? true : false,
                         height: 70,
                         width: 70,
                       ),
@@ -102,21 +100,19 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                 ),
               ],
             ),
-            Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: especialities.length,
-                    itemBuilder: (context, index) {
-                      final especialitie = especialities[index];
-                      return SizedBox(
-                        height: 200, // Restringe la altura del widget interno
-                        child: Text(especialitie.detail!),
-                      );
-                    },
-                  ),
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  itemCount: especialities.length,
+                  itemBuilder: (context, index) {
+                    final especialitie = especialities[index];
+
+                    return Text(especialitie.detail!);
+                  },
                 ),
-              ],
+              ),
             )
           ],
         ),
