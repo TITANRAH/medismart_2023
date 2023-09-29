@@ -14,7 +14,7 @@ class UserData {
     final DateTime birthDate;
     final String gender;
     final String address;
-    final dynamic foresight;
+    final String foresight;
     final int timeZone;
     final String allergies;
     final String diseases;
@@ -22,9 +22,10 @@ class UserData {
     final String surgeries;
     final String habits;
     final String status;
+    final int idCliente;
     final List<HomeService> homeServices;
 
-    UserData({
+    UserData( {
         required this.userId,
         required this.personId,
         required this.identifier,
@@ -46,32 +47,34 @@ class UserData {
         required this.surgeries,
         required this.habits,
         required this.status,
+        required this.idCliente,
         required this.homeServices,
     });
 
     factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         userId: json["userId"],
         personId: json["personId"],
-        identifier: json["identifier"],
-        id: json["id"],
-        name: json["name"],
-        firstLastName: json["firstLastName"],
-        secondLastName: json["secondLastName"],
-        email: json["email"],
-        phoneNumber: json["phoneNumber"],
-        mobilePhoneNumber: json["mobilePhoneNumber"],
+        identifier: json["identifier"] ?? '',
+        id: json["id"] ?? 0,
+        name: json["name"] ?? '',
+        firstLastName: json["firstLastName"] ?? '',
+        secondLastName: json["secondLastName"] ?? '',
+        email: json["email"] ?? '',
+        phoneNumber: json["phoneNumber"] ?? '',
+        mobilePhoneNumber: json["mobilePhoneNumber"] ?? '',
         birthDate: DateTime.parse(json["birthDate"]),
-        gender: json["gender"],
-        address: json["address"],
-        foresight: json["foresight"],
+        gender: json["gender"] ?? '',
+        address: json["address"] ?? '',
+        foresight: json["foresight"] ?? '',
         timeZone: json["timeZone"],
-        allergies: json["allergies"],
-        diseases: json["diseases"],
-        medicines: json["medicines"],
-        surgeries: json["surgeries"],
-        habits: json["habits"],
-        status: json["status"],
-        homeServices: List<HomeService>.from(json["homeServices"].map((x) => HomeService.fromJson(x))),
+        allergies: json["allergies"] ?? '',
+        diseases: json["diseases"] ?? '',
+        medicines: json["medicines"] ?? '',
+        surgeries: json["surgeries"] ?? '',
+        habits: json["habits"] ?? '',
+        status: json["status"] ?? '',
+        idCliente: json["idCliente"] ?? 0,
+        homeServices: List<HomeService>.from(json["homeServices"].map((x) => HomeService.fromJson(x))), 
     );
 
     Map<String, dynamic> toJson() => {
@@ -96,6 +99,7 @@ class UserData {
         "surgeries": surgeries,
         "habits": habits,
         "status": status,
+        "idCliente": idCliente,
         "homeServices": List<dynamic>.from(homeServices.map((x) => x.toJson())),
     };
 }

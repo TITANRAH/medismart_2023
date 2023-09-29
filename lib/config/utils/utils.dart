@@ -22,16 +22,16 @@ List<String> serviceOrder = [
 Map<String, String> iconsServices = {
   "ATEN_MG": atencionInmediata,
   "ATEN_SUS": suscripcion,
-  "ATEN_OD": atencionOnDemand ,
+  "ATEN_OD": atencionOnDemand,
   "PORTAL_EXAM": examenesPrev,
   "VET": wellness,
   "ORIEN_ENF": examenesDom,
-  "PORTAL_FARM": farmacia ,
+  "PORTAL_FARM": farmacia,
   "WIKIDOC": wikidoc,
 };
 Map<String, String> servicesRoutes = {
   "ATEN_MG": 'atenttion-immediate',
-  "ATEN_SUS": 'schedule-sus',
+  "ATEN_SUS": '/schedule',
   "WIKIDOC": 'wikidoc',
   "PORTAL_EXAM": 'home-exams',
   "ATEN_OD": 'schedule-od',

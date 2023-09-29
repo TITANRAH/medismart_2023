@@ -18,5 +18,10 @@ GoRouter appRouter(AppRouterRef ref) {
       name: LoginScreen.name,
       builder: (context, state) => const LoginScreen(),
     ),
+    GoRoute(
+      path: '/schedule',
+      name: ScheduleScreen.name,
+      builder: (context, state) => const ScheduleScreen(),
+    ),
   ]);
 }

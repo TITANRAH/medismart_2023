@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/utils/utils.dart';
 import 'package:medismart_2023/presentation/providers/user/user_provider.dart';
-import 'package:medismart_2023/presentation/widgets/shared/footer.dart';
+import 'package:medismart_2023/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
@@ -18,7 +18,8 @@ class HomeScreen extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(),
+      appBar: CustomAppBar(
+          backgroundColor: colors.primary, iconColor: colors.onPrimary),
       // bottomNavigationBar: const CustomBottomNavigation(),
       backgroundColor: colors.primary,
       body: const SingleChildScrollView(
