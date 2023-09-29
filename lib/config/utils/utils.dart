@@ -34,8 +34,8 @@ Map<String, String> servicesRoutes = {
   "ATEN_SUS": '/schedule',
   "WIKIDOC": 'wikidoc',
   "PORTAL_EXAM": 'home-exams',
-  "ATEN_OD": 'schedule-od',
+  "ATEN_OD": '/schedule',
   "ORIEN_ENF": 'preventive-exams',
   "PORTAL_FARM": 'pharmacy',
-  "VET": 'schedule-vet',
+  "VET": '/schedule',
 };

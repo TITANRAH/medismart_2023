@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/utils/utils.dart';
-import 'package:medismart_2023/presentation/providers/user/user_provider.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
+
+import '../providers/user/user_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
@@ -114,7 +115,7 @@ class _CardService extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.titleMedium;
     final colors = Theme.of(context).colorScheme;
     return GestureDetector(
-      onTap: () => context.push(route!),
+      onTap: () => context.push('/schedule', extra: typeService),
       child: Card(
         color: colors.onSecondary,
         shape: const RoundedRectangleBorder(

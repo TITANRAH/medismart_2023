@@ -19,7 +19,7 @@ class UserHomeServices {
       cod: homeService.cod,
       texto: homeService.texto,
       subTexto: homeService.subTexto,
-      tipoServicio: homeService.subTexto
+      tipoServicio: homeService.tipoServicio
     );
   }
 }
