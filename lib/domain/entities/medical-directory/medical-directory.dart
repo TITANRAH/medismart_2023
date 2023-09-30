@@ -6,11 +6,11 @@ class MedicalDirectory {
   final String? codigoPrestacion;
   final String? almaMater;
   final String? especialidad;
-  final String? codigoEspecialidad;
+  final int? codigoEspecialidad;
   final String? fechaText;
   final String? horadesDeText;
   final String? fotoPerfil;
-  final String? valorAtencion;
+  final int? valorAtencion;
   final String? titulo;
 
   MedicalDirectory({

@@ -9,56 +9,56 @@ List<MedicalDirectoryResponse> medicalDirectoryFromJson(String str) => List<Medi
 String medicalDirectoryToJson(List<MedicalDirectoryResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class MedicalDirectoryResponse {
-    final int idMedico;
-    final String nombreMedico;
-    final String apellidoPaternoMedico;
-    final String apellidoMaternoMedico;
-    final String? codigoPrestacion;
-    final String almaMater;
-    final String especialidad;
-    final int codigoEspecialidad;
-    final String fechaText;
-    final String horadesDeText;
-    final String fotoPerfil;
-    final int valorAtencion;
-    final String prefijoProfesional;
-    final String titulo;
-    final String infoPersona1;
+    final int?  idMedico;
+    final String?  nombreMedico;
+    final String?  apellidoPaternoMedico;
+    final String?  apellidoMaternoMedico;
+    final String?  codigoPrestacion;
+    final String?  almaMater;
+    final String?  especialidad;
+    final int?  codigoEspecialidad;
+    final String?  fechaText;
+    final String?  horadesDeText;
+    final String?  fotoPerfil;
+    final int?  valorAtencion;
+    final String?  prefijoProfesional;
+    final String?  titulo;
+    final String?  infoPersona1;
 
     MedicalDirectoryResponse({
-        required this.idMedico,
-        required this.nombreMedico,
-        required this.apellidoPaternoMedico,
-        required this.apellidoMaternoMedico,
-        required this.codigoPrestacion,
-        required this.almaMater,
-        required this.especialidad,
-        required this.codigoEspecialidad,
-        required this.fechaText,
-        required this.horadesDeText,
-        required this.fotoPerfil,
-        required this.valorAtencion,
-        required this.prefijoProfesional,
-        required this.titulo,
-        required this.infoPersona1,
+         this.idMedico,
+         this.nombreMedico,
+         this.apellidoPaternoMedico,
+         this.apellidoMaternoMedico,
+         this.codigoPrestacion,
+         this.almaMater,
+         this.especialidad,
+         this.codigoEspecialidad,
+         this.fechaText,
+         this.horadesDeText,
+         this.fotoPerfil,
+         this.valorAtencion,
+         this.prefijoProfesional,
+         this.titulo,
+         this.infoPersona1,
     });
 
     factory MedicalDirectoryResponse.fromJson(Map<String, dynamic> json) => MedicalDirectoryResponse(
-        idMedico: json["idMedico"],
-        nombreMedico: json["nombreMedico"],
-        apellidoPaternoMedico: json["apellidoPaternoMedico"],
-        apellidoMaternoMedico: json["apellidoMaternoMedico"],
-        codigoPrestacion: json["codigoPrestacion"],
-        almaMater: json["almaMater"],
+        idMedico: json["idMedico"] ?? 0,
+        nombreMedico: json["nombreMedico"] ?? '',
+        apellidoPaternoMedico: json["apellidoPaternoMedico"] ?? '',
+        apellidoMaternoMedico: json["apellidoMaternoMedico"] ?? '',
+        codigoPrestacion: json["codigoPrestacion"] ?? '' ,
+        almaMater: json["almaMater"] ?? '' ,
         especialidad: json["especialidad"],
-        codigoEspecialidad: json["codigoEspecialidad"],
-        fechaText: json["fechaText"],
-        horadesDeText: json["horadesDeText"],
-        fotoPerfil: json["fotoPerfil"],
-        valorAtencion: json["valorAtencion"],
+        codigoEspecialidad: json["codigoEspecialidad"] ?? 0,
+        fechaText: json["fechaText"] ?? '',
+        horadesDeText: json["horadesDeText"] ?? '',
+        fotoPerfil: json["fotoPerfil"] ?? '',
+        valorAtencion: json["valorAtencion"] ?? 0,
         prefijoProfesional: json["prefijoProfesional"]!,
-        titulo: json["titulo"],
-        infoPersona1: json["infoPersona1"],
+        titulo: json["titulo"] ?? '',
+        infoPersona1: json["infoPersona1"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {

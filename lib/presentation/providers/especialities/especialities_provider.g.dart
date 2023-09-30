@@ -6,7 +6,7 @@ part of 'especialities_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$especialitiesHash() => r'bac1dfac6b6525a35e83222e2e2e3089cd44d81b';
+String _$especialitiesHash() => r'0f8ab3ac12bfc441c8b2e59e7decfe3b4a3ab0bd';
 
 /// See also [Especialities].
 @ProviderFor(Especialities)

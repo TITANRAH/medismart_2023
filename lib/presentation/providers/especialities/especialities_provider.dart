@@ -16,14 +16,23 @@ class Especialities extends _$Especialities {
     return [];
   }
 
+// En tu método que realiza la consulta
+
+  // Resto de tu código...
+
   Future<void> getEspecialities(idUsuario, idCliente, tipo) async {
     final especialities =
         await impl.getEspecialities(idUsuario, idCliente, tipo);
-    if (especialities.isEmpty) {
-      state = [];
-    }
 
-    state = especialities;
+    final defaultEspecialitie =
+        Especialitie(code: 0, detail: 'Selecciona una especialidad');
+
+    if (!especialities.contains(defaultEspecialitie)) {
+      especialities.insert(0, defaultEspecialitie);
+      state = especialities.toSet().toList();
+    } else {
+      state = especialities.toSet().toList();
+    }
 
     print(state);
   }
