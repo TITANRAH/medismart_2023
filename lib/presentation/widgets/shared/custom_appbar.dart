@@ -16,6 +16,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      forceMaterialTransparency: true,
+      automaticallyImplyLeading: true,
       backgroundColor: backgroundColor,
       leading: IconButton(
         iconSize: 30,

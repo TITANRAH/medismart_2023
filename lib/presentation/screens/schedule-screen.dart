@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medismart_2023/domain/entities/especialitie/especialitie.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
 import 'package:medismart_2023/presentation/providers/especialities/especialities_provider.dart';
 import 'package:medismart_2023/presentation/providers/medical_directory/medical_directory_provider.dart';
 import 'package:medismart_2023/presentation/providers/user/user_provider.dart';
@@ -29,6 +30,10 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     ref.read(especialitiesProvider.notifier).getEspecialities(user.userId,
         user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
 
+    ref.read(medicalDirectoryDoctorsProvider.notifier).getMedicalDirectory(
+        user.userId,
+        user.idCliente,
+        widget.tipoServicio != '' ? widget.tipoServicio : 'S');
     super.didChangeDependencies();
   }
 
@@ -36,8 +41,9 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final especialities = ref.watch(especialitiesProvider);
-    const bool isDirectory = false;
-
+    final textStyleEspecialitie = Theme.of(context).textTheme.titleSmall;
+    final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
+    final textStyleDate = Theme.of(context).textTheme.titleLarge;
     final user = ref.watch(userActiveProvider);
     final medicalDirectory = ref.watch(medicalDirectoryDoctorsProvider);
 
@@ -47,6 +53,14 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
           .getEspecialities(user.userId, user.idCliente, serviceType);
 
       widget.tipoServicio = serviceType;
+
+      ref
+          .read(medicalDirectoryDoctorsProvider.notifier)
+          .getCurrentEspecialitie('Selecciona una especialidad');
+
+      ref
+          .read(medicalDirectoryDoctorsProvider.notifier)
+          .getMedicalDirectory(user.userId, user.idCliente, serviceType);
     }
 
     return Scaffold(
@@ -123,42 +137,26 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               const SizedBox(
                 height: 40,
               ),
-              _CustomDropdown(especialities: especialities, typeService: 'O'),
-              medicalDirectory.isNotEmpty
-                  ? SizedBox(
-                      height: 500,
-                      child: ListView.builder(
-                        itemCount: medicalDirectory.length,
-                        itemBuilder: (context, index) {
-                          final doctor = medicalDirectory[index];
-                          return Card(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      child: doctor.fotoPerfil != ''
-                                          ? Image.network('https://services.medismart.live${doctor.fotoPerfil!}'.replaceAll('/', '//'))
-                                          : const Text('Sin Foto'), 
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(doctor.nombreMedico!),
-                                        Text(doctor.especialidad!),
-                                        const Text('Atención más cercana'),
-                                        Text(
-                                            '${doctor.fechaText} - ${doctor.horadesDeText}'),
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                  : const Center(child: Text('SELECCIONA UNA ESPECIALIDAD')),
+              _CustomDropdown(
+                  especialities: especialities,
+                  typeService: widget.tipoServicio),
+              const SizedBox(
+                height: 10,
+              ),
+              !ref.read(medicalDirectoryDoctorsProvider.notifier).isLoading
+                  ? _BoxDoctor(
+                      medicalDirectory: medicalDirectory,
+                      textStyleNameDoctor: textStyleNameDoctor,
+                      textStyleEspecialitie: textStyleEspecialitie,
+                      colors: colors,
+                      textStyleDate: textStyleDate)
+                  : const Padding(
+                      padding: EdgeInsets.only(top: 30),
+                      child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: CircularProgressIndicator()),
+                    ),
             ],
           ),
         ),
@@ -167,10 +165,111 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   }
 }
 
+class _BoxDoctor extends StatelessWidget {
+  const _BoxDoctor({
+    required this.medicalDirectory,
+    required this.textStyleNameDoctor,
+    required this.textStyleEspecialitie,
+    required this.colors,
+    required this.textStyleDate,
+  });
+
+  final List<MedicalDirectory> medicalDirectory;
+  final TextStyle? textStyleNameDoctor;
+  final TextStyle? textStyleEspecialitie;
+  final ColorScheme colors;
+  final TextStyle? textStyleDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return medicalDirectory.isNotEmpty
+        ? SizedBox(
+            height: 500,
+            child: ListView.builder(
+              itemCount: medicalDirectory.length,
+              itemBuilder: (context, index) {
+                final doctor = medicalDirectory[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 13),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        8), // Establece el radio del borde en cero
+                  ),
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: ClipRRect(
+                                child: Image.asset('./assets/img/no-user.png'),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doctor.nombreMedico!.toUpperCase(),
+                                  style: textStyleNameDoctor!.copyWith(
+                                      color: const Color.fromARGB(
+                                          255, 138, 143, 168),
+                                      fontWeight: FontWeight.w900),
+                                ),
+                                Text(
+                                  doctor.especialidad!,
+                                  style: textStyleEspecialitie!.copyWith(
+                                      color: const Color.fromARGB(
+                                          255, 138, 143, 168),
+                                      fontWeight: FontWeight.w900),
+                                ),
+                                Text('Atención más cercana'.toUpperCase(),
+                                    style: textStyleEspecialitie!.copyWith(
+                                        color: colors.inversePrimary)),
+                                Text(
+                                  '${doctor.fechaText} - ${doctor.horadesDeText}',
+                                  style: textStyleDate!.copyWith(
+                                      color: colors.primary,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: FilledButton(
+                              style: FilledButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      8), // Establece el radio del borde en cero
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text('AGENDAR')),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        : const Text(
+            'SIN DOCTORES PARA ESTA ESPECIALIDAD, TE MOSTRAREMOS LOS DISPONIBLES');
+  }
+}
+
 class _CustomDropdown extends ConsumerWidget {
   final List<Especialitie> especialities;
   final String? typeService;
-
   const _CustomDropdown({
     this.typeService,
     required this.especialities,
@@ -178,27 +277,25 @@ class _CustomDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    var currentValue = 'Selecciona una especialidad';
+    // var currentValue = 'Selecciona una especialidad';
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme.labelLarge;
-    final user = ref.watch(userActiveProvider);
+    final currentValue = ref
+        .read(medicalDirectoryDoctorsProvider.notifier)
+        .currentValueEspecialitie;
 
     return especialities.isNotEmpty
         ? Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: colors.primary,
+                color: colors.inversePrimary,
                 width: 2.0,
               ),
               borderRadius: BorderRadius.circular(8),
             ),
             child: DropdownButtonFormField<String>(
               key: UniqueKey(),
-              value: currentValue == ''
-                  ? especialities.firstWhere(
-                          (e) => e.detail == 'Selecciona una especialidad')
-                      as String
-                  : currentValue,
+              value: currentValue,
               isExpanded: true,
               itemHeight: 50,
               menuMaxHeight: 400,
@@ -209,7 +306,7 @@ class _CustomDropdown extends ConsumerWidget {
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: colors.primary, // Color del ícono
+                  color: colors.inversePrimary, // Color del ícono
                   size: 40,
                 ),
               ),
@@ -220,8 +317,7 @@ class _CustomDropdown extends ConsumerWidget {
                       onTap: (() {
                         ref
                             .read(medicalDirectoryDoctorsProvider.notifier)
-                            .getMedicalDirectory(
-                                user.userId, user.idCliente, typeService);
+                            .filteredDoctors(currentValue, item.code!);
                       }),
                       value: item.detail,
                       child: Center(
@@ -234,10 +330,12 @@ class _CustomDropdown extends ConsumerWidget {
                   )
                   .toList(),
               onChanged: (item) {
-                currentValue = item!;
+                ref
+                    .read(medicalDirectoryDoctorsProvider.notifier)
+                    .getCurrentEspecialitie(item!);
               },
             ))
-        : const Center(child: CircularProgressIndicator());
+        : Container();
   }
 }
 

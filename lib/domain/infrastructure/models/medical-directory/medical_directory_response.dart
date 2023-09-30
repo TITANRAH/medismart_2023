@@ -4,64 +4,69 @@
 
 import 'dart:convert';
 
-List<MedicalDirectoryResponse> medicalDirectoryFromJson(String str) => List<MedicalDirectoryResponse>.from(json.decode(str).map((x) => MedicalDirectoryResponse.fromJson(x)));
+List<MedicalDirectoryResponse> medicalDirectoryFromJson(String str) =>
+    List<MedicalDirectoryResponse>.from(
+        json.decode(str).map((x) => MedicalDirectoryResponse.fromJson(x)));
 
-String medicalDirectoryToJson(List<MedicalDirectoryResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String medicalDirectoryToJson(List<MedicalDirectoryResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class MedicalDirectoryResponse {
-    final int?  idMedico;
-    final String?  nombreMedico;
-    final String?  apellidoPaternoMedico;
-    final String?  apellidoMaternoMedico;
-    final String?  codigoPrestacion;
-    final String?  almaMater;
-    final String?  especialidad;
-    final int?  codigoEspecialidad;
-    final String?  fechaText;
-    final String?  horadesDeText;
-    final String?  fotoPerfil;
-    final int?  valorAtencion;
-    final String?  prefijoProfesional;
-    final String?  titulo;
-    final String?  infoPersona1;
+  final int? idMedico;
+  final String? nombreMedico;
+  final String? apellidoPaternoMedico;
+  final String? apellidoMaternoMedico;
+  final String? codigoPrestacion;
+  final String? almaMater;
+  final String? especialidad;
+  final int? codigoEspecialidad;
+  final String? fechaText;
+  final String? horadesDeText;
+  final String? fotoPerfil;
+  final int? valorAtencion;
+  final String? prefijoProfesional;
+  final String? titulo;
+  final String? infoPersona1;
 
-    MedicalDirectoryResponse({
-         this.idMedico,
-         this.nombreMedico,
-         this.apellidoPaternoMedico,
-         this.apellidoMaternoMedico,
-         this.codigoPrestacion,
-         this.almaMater,
-         this.especialidad,
-         this.codigoEspecialidad,
-         this.fechaText,
-         this.horadesDeText,
-         this.fotoPerfil,
-         this.valorAtencion,
-         this.prefijoProfesional,
-         this.titulo,
-         this.infoPersona1,
-    });
+  MedicalDirectoryResponse({
+    this.idMedico,
+    this.nombreMedico,
+    this.apellidoPaternoMedico,
+    this.apellidoMaternoMedico,
+    this.codigoPrestacion,
+    this.almaMater,
+    this.especialidad,
+    this.codigoEspecialidad,
+    this.fechaText,
+    this.horadesDeText,
+    this.fotoPerfil,
+    this.valorAtencion,
+    this.prefijoProfesional,
+    this.titulo,
+    this.infoPersona1,
+  });
 
-    factory MedicalDirectoryResponse.fromJson(Map<String, dynamic> json) => MedicalDirectoryResponse(
+  factory MedicalDirectoryResponse.fromJson(Map<String, dynamic> json) =>
+      MedicalDirectoryResponse(
         idMedico: json["idMedico"] ?? 0,
         nombreMedico: json["nombreMedico"] ?? '',
         apellidoPaternoMedico: json["apellidoPaternoMedico"] ?? '',
-        apellidoMaternoMedico: json["apellidoMaternoMedico"] ?? '',
-        codigoPrestacion: json["codigoPrestacion"] ?? '' ,
-        almaMater: json["almaMater"] ?? '' ,
-        especialidad: json["especialidad"],
+        apellidoMaternoMedico:
+            json["apellidoMaternoMedico"] ?? '',
+        codigoPrestacion: json["codigoPrestacion"] ?? '',
+        almaMater: json["almaMater"] ?? '',
+        especialidad: json["especialidad"] ?? '',
         codigoEspecialidad: json["codigoEspecialidad"] ?? 0,
         fechaText: json["fechaText"] ?? '',
         horadesDeText: json["horadesDeText"] ?? '',
         fotoPerfil: json["fotoPerfil"] ?? '',
-        valorAtencion: json["valorAtencion"] ?? 0,
-        prefijoProfesional: json["prefijoProfesional"]!,
+        valorAtencion: json["valorAtencion"] ?? '',
+        prefijoProfesional: json["prefijoProfesional"] ?? '',
         titulo: json["titulo"] ?? '',
         infoPersona1: json["infoPersona1"] ?? '',
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "idMedico": idMedico,
         "nombreMedico": nombreMedico,
         "apellidoPaternoMedico": apellidoPaternoMedico,
@@ -77,7 +82,7 @@ class MedicalDirectoryResponse {
         "prefijoProfesional": prefijoProfesional,
         "titulo": titulo,
         "infoPersona1": infoPersona1,
-    };
+      };
 }
 
 // enum PrefijoProfesional {

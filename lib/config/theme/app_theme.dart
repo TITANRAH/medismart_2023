@@ -14,7 +14,7 @@ const List<Color> _colorThemes = [
 
 class AppTheme {
   final int selectedColor;
-
+  
   // las asersiones me sirven para controlar errores
   AppTheme({
     this.selectedColor = 0,
