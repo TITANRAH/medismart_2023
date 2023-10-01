@@ -12,8 +12,8 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final GlobalKey<FormState> myFormKey = GlobalKey<FormState>();
-    final passController = TextEditingController(text:'178695');
-    final usernameController = TextEditingController(text:'17869526-6');
+    final passController = TextEditingController(text:'S@ntino123');
+    final usernameController = TextEditingController(text:'16296327-9');
     final colors = Theme.of(context).colorScheme;
     final titleStyle = Theme.of(context).textTheme.titleSmall;
     final isLoading = ref.watch(isLoadingProvider);

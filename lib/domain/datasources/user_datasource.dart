@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 import 'package:medismart_2023/domain/infrastructure/datasources/user_response_datasource.dart';
 import 'package:medismart_2023/domain/infrastructure/mappers/user_mapper.dart';
@@ -6,7 +7,7 @@ import 'package:medismart_2023/domain/infrastructure/models/user/user_response.d
 
 class UserDatasource extends UserResponseDataSource {
   final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://api-auth-ms-qa.azurewebsites.net/',
+    baseUrl: Environments.urlLogin,
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",

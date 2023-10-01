@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../presentation/screens/screens.dart';
@@ -26,6 +27,17 @@ GoRouter appRouter(AppRouterRef ref) {
          final tipoServicio = state.extra! as String;
             return ScheduleScreen(
               tipoServicio: tipoServicio,
+            );
+      },
+    ),
+    GoRoute(
+      path: '/scheduling',
+      name: SchedulingScreen.name,
+      // builder: (context, state) => const ScheduleScreen(),
+      builder: (context, state) {
+         final docSelected = state.extra! as MedicalDirectory;
+            return SchedulingScreen(
+              docSelected: docSelected,
             );
       },
     ),

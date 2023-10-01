@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
 import 'package:medismart_2023/domain/infrastructure/datasources/medical_directory_response_datasource.dart';
 import 'package:medismart_2023/domain/infrastructure/models/medical-directory/medical_directory_response.dart';
@@ -7,7 +8,7 @@ import '../infrastructure/mappers/medical_directory_mappers.dart';
 
 class MedicalDirectoryDatasource extends MedicalDirectoryDataSourceResponse {
   final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://api-directory-ms-qa.azurewebsites.net/',
+    baseUrl: Environments.baseApiUrl,
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",

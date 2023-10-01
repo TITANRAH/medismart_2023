@@ -51,8 +51,7 @@ class MedicalDirectoryResponse {
         idMedico: json["idMedico"] ?? 0,
         nombreMedico: json["nombreMedico"] ?? '',
         apellidoPaternoMedico: json["apellidoPaternoMedico"] ?? '',
-        apellidoMaternoMedico:
-            json["apellidoMaternoMedico"] ?? '',
+        apellidoMaternoMedico: json["apellidoMaternoMedico"] ?? '',
         codigoPrestacion: json["codigoPrestacion"] ?? '',
         almaMater: json["almaMater"] ?? '',
         especialidad: json["especialidad"] ?? '',

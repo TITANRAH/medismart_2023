@@ -1,11 +1,11 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/domain/entities/especialitie/especialitie.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
-import 'package:medismart_2023/presentation/providers/especialities/especialities_provider.dart';
-import 'package:medismart_2023/presentation/providers/medical_directory/medical_directory_provider.dart';
-import 'package:medismart_2023/presentation/providers/user/user_provider.dart';
+import 'package:medismart_2023/presentation/providers/providers.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 
 class ScheduleScreen extends ConsumerStatefulWidget {
@@ -70,9 +70,9 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
         backgroundColor: colors.onPrimary,
         iconColor: colors.primary,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
               const Stepers(
@@ -139,7 +139,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               ),
               _CustomDropdown(
                   especialities: especialities,
-                  typeService: widget.tipoServicio),
+                  typeService: widget.tipoServicio!),
               const SizedBox(
                 height: 10,
               ),
@@ -157,6 +157,10 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                           height: 100,
                           child: CircularProgressIndicator()),
                     ),
+              const SizedBox(
+                height: 20,
+              ),
+              _SwiperCustom()
             ],
           ),
         ),
@@ -184,7 +188,7 @@ class _BoxDoctor extends StatelessWidget {
   Widget build(BuildContext context) {
     return medicalDirectory.isNotEmpty
         ? SizedBox(
-            height: 500,
+            height: 700,
             child: ListView.builder(
               itemCount: medicalDirectory.length,
               itemBuilder: (context, index) {
@@ -252,7 +256,9 @@ class _BoxDoctor extends StatelessWidget {
                                       8), // Establece el radio del borde en cero
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                context.push('/scheduling', extra: doctor);
+                              },
                               child: const Text('AGENDAR')),
                         )
                       ],
@@ -262,16 +268,19 @@ class _BoxDoctor extends StatelessWidget {
               },
             ),
           )
-        : const Text(
-            'SIN DOCTORES PARA ESTA ESPECIALIDAD, TE MOSTRAREMOS LOS DISPONIBLES');
+        : Center(
+            child: Text(
+            'SIN PROFESIONALES PARA ESTA ESPECIALIDAD',
+            style: textStyleEspecialitie!.copyWith(color: colors.primary),
+          ));
   }
 }
 
 class _CustomDropdown extends ConsumerWidget {
   final List<Especialitie> especialities;
-  final String? typeService;
+  final String typeService;
   const _CustomDropdown({
-    this.typeService,
+    required this.typeService,
     required this.especialities,
   });
 
@@ -283,6 +292,7 @@ class _CustomDropdown extends ConsumerWidget {
     final currentValue = ref
         .read(medicalDirectoryDoctorsProvider.notifier)
         .currentValueEspecialitie;
+    final user = ref.watch(userActiveProvider);
 
     return especialities.isNotEmpty
         ? Container(
@@ -317,7 +327,8 @@ class _CustomDropdown extends ConsumerWidget {
                       onTap: (() {
                         ref
                             .read(medicalDirectoryDoctorsProvider.notifier)
-                            .filteredDoctors(currentValue, item.code!);
+                            .filteredDoctors(currentValue, item.code!,
+                                user.userId!, typeService, user.idCliente!);
                       }),
                       value: item.detail,
                       child: Center(
@@ -402,6 +413,35 @@ class _BoxService extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SwiperCustom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200, // Establece una altura fija
+      child: Swiper(
+        autoplay: true,
+        autoplayDelay: 4000,
+        itemCount: 2,
+        viewportFraction: 1,
+        scale: 0.9,
+        itemBuilder: (BuildContext context, int index) {
+          // Aquí puedes cargar las imágenes desde tu lista de imágenes
+          // Por ejemplo, puedes usar NetworkImage o AssetImage para cargar imágenes desde una URL o un archivo local.
+          return Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            child: Image.asset(
+              index == 0
+                  ? './assets/img/325x130-1.png'
+                  : './assets/img/325x130.png',
+              fit: BoxFit.fill,
+            ),
+          );
+        },
       ),
     );
   }
