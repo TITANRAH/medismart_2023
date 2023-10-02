@@ -27,13 +27,13 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   void didChangeDependencies() {
     final user = ref.watch(userActiveProvider);
 
-    ref.read(especialitiesProvider.notifier).getEspecialities(user.userId,
-        user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
+    ref
+        .read(especialitiesProvider.notifier)
+        .getEspecialities(user.userId, user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
 
-    ref.read(medicalDirectoryDoctorsProvider.notifier).getMedicalDirectory(
-        user.userId,
-        user.idCliente,
-        widget.tipoServicio != '' ? widget.tipoServicio : 'S');
+    ref
+        .read(medicalDirectoryDoctorsProvider.notifier)
+        .getMedicalDirectory(user.userId, user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
     super.didChangeDependencies();
   }
 
@@ -48,19 +48,13 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     final medicalDirectory = ref.watch(medicalDirectoryDoctorsProvider);
 
     void selectService(String serviceType) {
-      ref
-          .read(especialitiesProvider.notifier)
-          .getEspecialities(user.userId, user.idCliente, serviceType);
+      ref.read(especialitiesProvider.notifier).getEspecialities(user.userId, user.idCliente, serviceType);
 
       widget.tipoServicio = serviceType;
 
-      ref
-          .read(medicalDirectoryDoctorsProvider.notifier)
-          .getCurrentEspecialitie('Selecciona una especialidad');
+      ref.read(medicalDirectoryDoctorsProvider.notifier).getCurrentEspecialitie('Selecciona una especialidad');
 
-      ref
-          .read(medicalDirectoryDoctorsProvider.notifier)
-          .getMedicalDirectory(user.userId, user.idCliente, serviceType);
+      ref.read(medicalDirectoryDoctorsProvider.notifier).getMedicalDirectory(user.userId, user.idCliente, serviceType);
     }
 
     return Scaffold(
@@ -96,8 +90,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                         child: _BoxService(
                           iconBox: './assets/svg/icon_tuplanempresa_g.svg',
                           textService: 'TU PLAN EMPRESA',
-                          isActiveBox:
-                              widget.tipoServicio == 'S' ? true : false,
+                          isActiveBox: widget.tipoServicio == 'S' ? true : false,
                           height: 70,
                           width: 70,
                         ),
@@ -109,8 +102,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                         child: _BoxService(
                           iconBox: './assets/svg/medicina-especialista.svg',
                           textService: 'MEDICINA ESPECIALISTA',
-                          isActiveBox:
-                              widget.tipoServicio == 'O' ? true : false,
+                          isActiveBox: widget.tipoServicio == 'O' ? true : false,
                           height: 70,
                           width: 70,
                         ),
@@ -118,7 +110,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -137,9 +129,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               const SizedBox(
                 height: 40,
               ),
-              _CustomDropdown(
-                  especialities: especialities,
-                  typeService: widget.tipoServicio!),
+              _CustomDropdown(especialities: especialities, typeService: widget.tipoServicio!),
               const SizedBox(
                 height: 10,
               ),
@@ -152,10 +142,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                       textStyleDate: textStyleDate)
                   : const Padding(
                       padding: EdgeInsets.only(top: 30),
-                      child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: CircularProgressIndicator()),
+                      child: SizedBox(width: 100, height: 100, child: CircularProgressIndicator()),
                     ),
               const SizedBox(
                 height: 20,
@@ -196,8 +183,7 @@ class _BoxDoctor extends StatelessWidget {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 13),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        8), // Establece el radio del borde en cero
+                    borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
                   ),
                   color: Colors.white,
                   child: Padding(
@@ -211,11 +197,11 @@ class _BoxDoctor extends StatelessWidget {
                               width: 100,
                               height: 100,
                               child: ClipRRect(
-                                child: Image.asset('./assets/img/no-user.png'),
+                                child: Image.network(doctor.fotoPerfil!),
                               ),
                             ),
                             const SizedBox(
-                              width: 30,
+                              width: 20,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,25 +209,18 @@ class _BoxDoctor extends StatelessWidget {
                                 Text(
                                   doctor.nombreMedico!.toUpperCase(),
                                   style: textStyleNameDoctor!.copyWith(
-                                      color: const Color.fromARGB(
-                                          255, 138, 143, 168),
-                                      fontWeight: FontWeight.w900),
+                                      color: const Color.fromARGB(255, 138, 143, 168), fontWeight: FontWeight.w900),
                                 ),
                                 Text(
                                   doctor.especialidad!,
                                   style: textStyleEspecialitie!.copyWith(
-                                      color: const Color.fromARGB(
-                                          255, 138, 143, 168),
-                                      fontWeight: FontWeight.w900),
+                                      color: const Color.fromARGB(255, 138, 143, 168), fontWeight: FontWeight.w900),
                                 ),
                                 Text('Atención más cercana'.toUpperCase(),
-                                    style: textStyleEspecialitie!.copyWith(
-                                        color: colors.inversePrimary)),
+                                    style: textStyleEspecialitie!.copyWith(color: colors.inversePrimary)),
                                 Text(
                                   '${doctor.fechaText} - ${doctor.horadesDeText}',
-                                  style: textStyleDate!.copyWith(
-                                      color: colors.primary,
-                                      fontWeight: FontWeight.bold),
+                                  style: textStyleDate!.copyWith(color: colors.primary, fontWeight: FontWeight.bold),
                                 ),
                               ],
                             )
@@ -252,8 +231,7 @@ class _BoxDoctor extends StatelessWidget {
                           child: FilledButton(
                               style: FilledButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Establece el radio del borde en cero
+                                  borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
                                 ),
                               ),
                               onPressed: () {
@@ -289,9 +267,7 @@ class _CustomDropdown extends ConsumerWidget {
     // var currentValue = 'Selecciona una especialidad';
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme.labelLarge;
-    final currentValue = ref
-        .read(medicalDirectoryDoctorsProvider.notifier)
-        .currentValueEspecialitie;
+    final currentValue = ref.read(medicalDirectoryDoctorsProvider.notifier).currentValueEspecialitie;
     final user = ref.watch(userActiveProvider);
 
     return especialities.isNotEmpty
@@ -327,8 +303,7 @@ class _CustomDropdown extends ConsumerWidget {
                       onTap: (() {
                         ref
                             .read(medicalDirectoryDoctorsProvider.notifier)
-                            .filteredDoctors(currentValue, item.code!,
-                                user.userId!, typeService, user.idCliente!);
+                            .filteredDoctors(currentValue, item.code!, user.userId!, typeService, user.idCliente!);
                       }),
                       value: item.detail,
                       child: Center(
@@ -341,9 +316,7 @@ class _CustomDropdown extends ConsumerWidget {
                   )
                   .toList(),
               onChanged: (item) {
-                ref
-                    .read(medicalDirectoryDoctorsProvider.notifier)
-                    .getCurrentEspecialitie(item!);
+                ref.read(medicalDirectoryDoctorsProvider.notifier).getCurrentEspecialitie(item!);
               },
             ))
         : Container();
@@ -368,13 +341,13 @@ class _BoxService extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final textStyle = Theme.of(context).textTheme.bodyMedium;
+    final textStyle = Theme.of(context).textTheme.bodySmall;
 
     final Color isActive = Colors.amber.shade600;
     final Color colorBox = Colors.blue.shade300;
 
     return SizedBox(
-      width: 190,
+      width: 160,
       height: 140,
       child: Container(
         decoration: BoxDecoration(
@@ -405,6 +378,7 @@ class _BoxService extends StatelessWidget {
               ),
               Text(
                 textService,
+                textAlign: TextAlign.center,
                 style: textStyle!.copyWith(
                   color: colors.onPrimary,
                   fontWeight: FontWeight.w500,
@@ -435,9 +409,7 @@ class _SwiperCustom extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Image.asset(
-              index == 0
-                  ? './assets/img/325x130-1.png'
-                  : './assets/img/325x130.png',
+              index == 0 ? './assets/img/325x130-1.png' : './assets/img/325x130.png',
               fit: BoxFit.fill,
             ),
           );

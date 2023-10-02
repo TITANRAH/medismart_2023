@@ -4,16 +4,12 @@ class Stepers extends StatelessWidget {
   final bool isActiveOne;
   final bool isActiveTwo;
   final bool isActiveThree;
-  const Stepers(
-      {super.key,
-      required this.isActiveOne,
-      required this.isActiveTwo,
-      required this.isActiveThree});
+  const Stepers({super.key, required this.isActiveOne, required this.isActiveTwo, required this.isActiveThree});
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    const circleSize = 60.0;
+    const circleSize = 45.0;
     const activeColor = Colors.blue; // Color cuando está activo
     const inactiveColor = Colors.grey;
     // Color cuando está inactivo
@@ -32,7 +28,7 @@ class Stepers extends StatelessWidget {
         Icon(
           Icons.keyboard_arrow_right_outlined,
           color: colors.primary,
-          size: 25,
+          size: 18,
         ),
         _CircleCustomSteper(
           circleSize: circleSize,
@@ -45,7 +41,7 @@ class Stepers extends StatelessWidget {
         Icon(
           Icons.keyboard_arrow_right_outlined,
           color: colors.primary,
-          size: 25,
+          size: 18,
         ),
         _CircleCustomSteper(
           circleSize: circleSize,
@@ -79,7 +75,7 @@ class _CircleCustomSteper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleSmall;
+    final titleStyle = Theme.of(context).textTheme.bodyMedium;
     return Column(
       children: [
         Container(
@@ -88,14 +84,12 @@ class _CircleCustomSteper extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isActive ? activeColor : inactiveColor,
-            border: isActive
-                ? Border.all(color: activeColor, width: 2.0)
-                : null, // Borde solo cuando está activo
+            border: isActive ? Border.all(color: activeColor, width: 2.0) : null, // Borde solo cuando está activo
           ),
           child: Center(
               child: Icon(
             icon,
-            size: 35,
+            size: 30,
             color: Colors.white,
           )),
         ),
@@ -104,8 +98,7 @@ class _CircleCustomSteper extends StatelessWidget {
         ),
         Text(
           steperText,
-          style: titleStyle!.copyWith(
-              color: isActive ? Colors.amber.shade600 : inactiveColor),
+          style: titleStyle!.copyWith(color: isActive ? Colors.amber.shade600 : inactiveColor),
         )
       ],
     );
