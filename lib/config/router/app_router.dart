@@ -35,9 +35,9 @@ GoRouter appRouter(AppRouterRef ref) {
       name: SchedulingScreen.name,
       // builder: (context, state) => const ScheduleScreen(),
       builder: (context, state) {
-         final docSelected = state.extra! as MedicalDirectory;
+         final idDoctor = state.extra! as int;
             return SchedulingScreen(
-              docSelected: docSelected,
+              idDoctor: idDoctor,
             );
       },
     ),

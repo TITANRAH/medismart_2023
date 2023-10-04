@@ -6,7 +6,7 @@ import '../../../domain/entities/medical-directory/medical-directory.dart';
 
 part 'medical_directory_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
   final impl = MedicalDirectoryRepositoryImpl(MedicalDirectoryDatasource());
   late String currentValueEspecialitie = 'Selecciona una especialidad';
@@ -60,5 +60,12 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
                 getMedicalDirectory(userId, idClient, typeService)
               });
     }
+  }
+
+  filteredUniqueDoc(int idDoctor) {
+    final doctor =
+        state.firstWhere((doc) => doc.idMedico == idDoctor);
+
+    return doctor;
   }
 }

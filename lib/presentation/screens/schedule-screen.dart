@@ -278,7 +278,7 @@ class _BoxDoctor extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                context.push('/scheduling', extra: doctor);
+                                context.push('/scheduling', extra: doctor.idMedico);
                               },
                               child: const Text('AGENDAR')),
                         )
