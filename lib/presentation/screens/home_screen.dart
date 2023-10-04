@@ -23,25 +23,27 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: colors.primary, iconColor: colors.onPrimary),
       // bottomNavigationBar: const CustomBottomNavigation(),
       backgroundColor: colors.primary,
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              _Saludo(
+              const _Saludo(
                 saludo: '¡Hola, ',
                 segundoSaludo: '¿En qué te podemos ayudar?',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 750,
                 child: _ServicesList(),
               ),
-              Powered()
+              Powered(
+                color: colors.onPrimary,
+              )
             ],
           ),
         ),

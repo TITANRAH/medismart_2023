@@ -20,7 +20,7 @@ final servicesProvider = FutureProvider<List<UserHomeServices>>.internal(
 );
 
 typedef ServicesRef = FutureProviderRef<List<UserHomeServices>>;
-String _$userActiveHash() => r'9475e07d62c28ed9cbb708e4f5076c0b3cc1c1ec';
+String _$userActiveHash() => r'd125835ee547781ed84d87505222c4f0c73e2c6d';
 
 /// See also [UserActive].
 @ProviderFor(UserActive)

@@ -7,7 +7,7 @@ part of 'medical_hours_provider.dart';
 // **************************************************************************
 
 String _$medicalHoursDoctorHash() =>
-    r'0804b425908ec4877031947677d682d291da9446';
+    r'9351517b7982452ab582148c287064a2b3decc86';
 
 /// See also [MedicalHoursDoctor].
 @ProviderFor(MedicalHoursDoctor)

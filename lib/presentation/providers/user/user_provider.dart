@@ -22,6 +22,10 @@ class UserActive extends _$UserActive {
     state = user;
     print('USER DESDE PROVIDER $state');
   }
+
+   returnUser() {
+    return state;
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -41,7 +45,6 @@ Future<List<UserHomeServices>> services(ServicesRef ref) async {
 
 @riverpod
 class IsLoading extends _$IsLoading {
-  
   @override
   build() {
     return false;
@@ -50,7 +53,10 @@ class IsLoading extends _$IsLoading {
   void isTrue() {
     state = true;
   }
+
   void isFalse() {
     state = false;
   }
+
+ 
 }

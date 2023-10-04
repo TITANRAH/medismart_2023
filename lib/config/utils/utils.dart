@@ -39,3 +39,8 @@ Map<String, String> servicesRoutes = {
   "PORTAL_FARM": 'pharmacy',
   "VET": '/schedule',
 };
+
+String formatDosDigitos(int numero) {
+  // Esta función agrega un cero adelante si el número es menor que 10
+  return numero.toString().padLeft(2, '0');
+}
