@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../presentation/screens/screens.dart';

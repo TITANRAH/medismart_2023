@@ -2,7 +2,7 @@ import 'package:medismart_2023/domain/infrastructure/repositories/medical_direct
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/datasources/medical_directory_datasource.dart';
-import '../../../domain/entities/medical-directory/medical-directory.dart';
+import '../../../domain/entities/medical-directory/medical_directory.dart';
 
 part 'medical_directory_provider.g.dart';
 

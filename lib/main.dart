@@ -31,8 +31,8 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en', 'US'), // English, no country code
-        Locale('es', 'ES'), // Spanish, no country code
+        Locale('en', ''), // English, no country code
+        Locale('es', ''), // Spanish, no country code
       ],
     );
   }

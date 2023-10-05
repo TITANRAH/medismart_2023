@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/domain/entities/especialitie/especialitie.dart';
-import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 

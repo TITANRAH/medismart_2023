@@ -1,5 +1,5 @@
 
-import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/domain/infrastructure/models/medical-directory/medical_directory_response.dart';
 
 

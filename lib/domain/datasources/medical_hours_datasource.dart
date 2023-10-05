@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:medismart_2023/config/constants/env.dart';
-import 'package:medismart_2023/domain/entities/medical-hours-entity/medical-hours-entity.dart';
+import 'package:medismart_2023/config/utils/utils.dart';
+import 'package:medismart_2023/domain/entities/medical-hours-entity/medical_hours_entity.dart';
 import 'package:medismart_2023/domain/infrastructure/datasources/medical_hours_response.dart';
 import 'package:medismart_2023/domain/infrastructure/mappers/medical_hours_mappers.dart';
 import 'package:medismart_2023/domain/infrastructure/models/medical-hours-model/medical_hours_model.dart';
@@ -17,21 +18,6 @@ class MedicalHoursDatasource extends MedicalHoursDataSourceResponse {
   );
 
   late String fechaFormateada = '';
-  late List<String> partes = [];
-  Map<String, String> meses = {
-    "ENE.": "01",
-    "FEB.": "02",
-    "MAR.": "03",
-    "ABR.": "04",
-    "MAY.": "05",
-    "JUN.": "06",
-    "JUL.": "07",
-    "AGO.": "08",
-    "SEP.": "09",
-    "OCT.": "10",
-    "NOV.": "11",
-    "DIC.": "12",
-  };
 
   @override
   Future<List<MedicalHours>> getMedicalHours(
@@ -41,12 +27,8 @@ class MedicalHoursDatasource extends MedicalHoursDataSourceResponse {
       String fechaSeleccionEstatica,
       int idPaciente) async {
     if (fechaSeleccion != '') {
-      partes = fechaSeleccion.split(' ');
-      String dia = partes[0];
-      String mesAbreviado = partes[1];
-      String anio = partes[2];
-      String mes = meses[mesAbreviado] ?? '';
-      fechaFormateada = "$anio$mes$dia";
+     
+      fechaFormateada = formatedFechaForMedicalHours(fechaSeleccion);
 
       // print('fechaFormateada $fechaFormateada');
     }

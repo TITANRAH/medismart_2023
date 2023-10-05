@@ -1,5 +1,5 @@
 import 'package:medismart_2023/domain/datasources/medical_hours_datasource.dart';
-import 'package:medismart_2023/domain/entities/medical-hours-entity/medical-hours-entity.dart';
+import 'package:medismart_2023/domain/entities/medical-hours-entity/medical_hours_entity.dart';
 import 'package:medismart_2023/domain/repositories/medical_hours_repository.dart';
 
 class MedicalHoursRepositoryImpl extends MedicalHoursRepository {

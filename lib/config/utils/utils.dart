@@ -44,3 +44,63 @@ String formatDosDigitos(int numero) {
   // Esta función agrega un cero adelante si el número es menor que 10
   return numero.toString().padLeft(2, '0');
 }
+
+String formatedFechaForAvalaiblesHoursInit(String fechaSeleccion) {
+  late String fechaFormateada = '';
+  late List<String> partes = [];
+  Map<String, String> meses = {
+    "ENE.": "01",
+    "FEB.": "02",
+    "MAR.": "03",
+    "ABR.": "04",
+    "MAY.": "05",
+    "JUN.": "06",
+    "JUL.": "07",
+    "AGO.": "08",
+    "SEP.": "09",
+    "OCT.": "10",
+    "NOV.": "11",
+    "DIC.": "12",
+  };
+
+  partes = fechaSeleccion.split(' ');
+  String dia = partes[0];
+  String mesAbreviado = partes[1];
+  String anio = partes[2];
+  String mes = meses[mesAbreviado] ?? '';
+
+  fechaFormateada = "$anio-$mes-$dia";
+
+  return fechaFormateada;
+}
+
+
+String formatedFechaForMedicalHours(String fechaSeleccion) {
+  late String fechaFormateada = '';
+  late List<String> partes = [];
+  Map<String, String> meses = {
+    "ENE.": "01",
+    "FEB.": "02",
+    "MAR.": "03",
+    "ABR.": "04",
+    "MAY.": "05",
+    "JUN.": "06",
+    "JUL.": "07",
+    "AGO.": "08",
+    "SEP.": "09",
+    "OCT.": "10",
+    "NOV.": "11",
+    "DIC.": "12",
+  };
+
+  partes = fechaSeleccion.split(' ');
+  String dia = partes[0];
+  String mesAbreviado = partes[1];
+  String anio = partes[2];
+  String mes = meses[mesAbreviado] ?? '';
+
+  fechaFormateada = "$anio$mes$dia";
+
+  return fechaFormateada;
+}
+

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medismart_2023/config/constants/env.dart';
-import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
+import 'package:medismart_2023/config/utils/utils.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
+import 'package:medismart_2023/presentation/providers/avalaible_medical_hours/avalaible_medical_hours_provider.dart';
 import 'package:medismart_2023/presentation/providers/medical_hours/medical_hours_provider.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
@@ -34,16 +36,15 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
 
     user = ref.read(userActiveProvider.notifier).returnUser();
 
-    widget.doctor = ref
-        .read(medicalDirectoryDoctorsProvider.notifier)
-        .filteredUniqueDoc(widget.idDoctor);
+    widget.doctor = ref.read(medicalDirectoryDoctorsProvider.notifier).filteredUniqueDoc(widget.idDoctor);
 
-    ref.read(medicalHoursDoctorProvider.notifier).getMedicalHours(
-        widget.idDoctor,
-        widget.doctor!.fechaText,
-        26,
-        widget.doctor!.fechaText,
-        user.idCliente);
+    ref
+        .read(medicalHoursDoctorProvider.notifier)
+        .getMedicalHours(widget.idDoctor, widget.doctor!.fechaText, 26, widget.doctor!.fechaText, user.idCliente);
+
+
+    ref.read(avalaibleMedicalHoursProvider.notifier).getAvalaibleHours(formatedFechaForAvalaiblesHoursInit(widget.doctor!.fechaText!), widget.idDoctor, 26, user.userId!);
+
   }
 
   @override
@@ -78,8 +79,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                       color: colors.primary,
                     ),
                     borderRadius: BorderRadius.circular(10)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: Column(
                   children: [
                     Column(
@@ -97,8 +97,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           // widget.doctor!.nombreMedico!,
                           'Selecciona si deseas en la mañana o en la tarde',
                           textAlign: TextAlign.left,
-                          style: titleStyleS!
-                              .copyWith(color: colors.onTertiaryContainer),
+                          style: titleStyleS!.copyWith(color: colors.onTertiaryContainer),
                         ),
                         const Divider(),
                         const SizedBox(
@@ -113,8 +112,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           children: [
                             FilledButton(
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      colors.inversePrimary),
+                                  backgroundColor: MaterialStatePropertyAll(colors.inversePrimary),
                                 ),
                                 onPressed: () {},
                                 child: const Padding(
@@ -126,8 +124,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                             ),
                             FilledButton(
                                 style: const ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(Colors.orange),
+                                  backgroundColor: MaterialStatePropertyAll(Colors.orange),
                                 ),
                                 onPressed: () {},
                                 child: const Padding(
@@ -145,32 +142,29 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                   border: Border.all(color: colors.primary),
                                 ),
                                 child: SfDateRangePicker(
+                                  initialSelectedDate: hours[0].fecha,
                                   backgroundColor: colors.onPrimary,
-                                  selectionTextStyle:
-                                      const TextStyle(fontSize: 20),
-                                  selectionMode:
-                                      DateRangePickerSelectionMode.single,
+                                  onSelectionChanged: (dateRangePickerSelectionChangedArgs) {
+                                    ref
+                                        .read(avalaibleMedicalHoursProvider.notifier)
+                                        .onSelectionChanged(dateRangePickerSelectionChangedArgs, widget.idDoctor, 26, user.userId!);
+                                  },
+                                  selectionTextStyle: const TextStyle(fontSize: 20),
+                                  selectionMode: DateRangePickerSelectionMode.single,
                                   view: DateRangePickerView.month,
-                                  selectionShape:
-                                      DateRangePickerSelectionShape.rectangle,
-                                  selectionColor: Colors
-                                      .green, // Color de fondo de las fechas seleccionadas
+                                  selectionShape: DateRangePickerSelectionShape.rectangle,
+                                  selectionColor: Colors.green, // Color de fondo de las fechas seleccionadas
                                   selectableDayPredicate:
                                       // esto necesita estado y no lo esta teniendo
                                       (date) {
-                                    if (!ref
-                                        .read(
-                                            medicalHoursDoctorProvider.notifier)
-                                        .selectedPredicatedMedicalHours(
-                                            date, hours)) {
+                                    if (!ref.read(medicalHoursDoctorProvider.notifier).selectedPredicatedMedicalHours(date, hours)) {
                                       return false;
                                     }
                                     return true;
                                   },
 
                                   todayHighlightColor: colors.inversePrimary,
-                                  monthViewSettings:
-                                      const DateRangePickerMonthViewSettings(
+                                  monthViewSettings: const DateRangePickerMonthViewSettings(
                                     firstDayOfWeek: 1,
                                   ),
                                   headerStyle: DateRangePickerHeaderStyle(
@@ -200,8 +194,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                         Text(
                           'Si quieres agendar para un día siguiente selecciona la fecha en el calendario',
                           textAlign: TextAlign.left,
-                          style: titleStyleS.copyWith(
-                              color: colors.onTertiaryContainer),
+                          style: titleStyleS.copyWith(color: colors.onTertiaryContainer),
                         ),
                         const SizedBox(
                           height: 20,
@@ -231,9 +224,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.orange),
-                                  borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(10)),
                               child: const Column(
                                 children: [
                                   Text(
@@ -253,8 +244,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     color: colors.inversePrimary,
                                     iconSize: 30,
                                     onPressed: () {},
-                                    icon: const Icon(
-                                        Icons.arrow_circle_left_rounded)),
+                                    icon: const Icon(Icons.arrow_back_ios_new_sharp)),
                                 Text(
                                   '19:00',
                                   style: titleStyleM.copyWith(
@@ -267,8 +257,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     color: colors.inversePrimary,
                                     iconSize: 30,
                                     onPressed: () {},
-                                    icon: const Icon(
-                                        Icons.arrow_circle_right_rounded)),
+                                    icon: const Icon(Icons.arrow_forward_ios_rounded)),
                               ],
                             )
                           ],
@@ -476,8 +465,7 @@ otra persona que no sea el titular
                       child: FilledButton(
                         style: FilledButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                8), // Establece el radio del borde en cero
+                            borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
                           ),
                         ),
                         onPressed: () {},

@@ -1,5 +1,5 @@
 import 'package:medismart_2023/domain/datasources/medical_directory_datasource.dart';
-import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
+import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/domain/repositories/medical_directory_repository.dart';
 
 class MedicalDirectoryRepositoryImpl extends MedicalDirectoryRepository {
