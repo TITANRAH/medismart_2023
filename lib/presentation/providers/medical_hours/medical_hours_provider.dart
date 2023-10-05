@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'medical_hours_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class MedicalHoursDoctor extends _$MedicalHoursDoctor {
   final impl = MedicalHoursRepositoryImpl(MedicalHoursDatasource());
 
@@ -26,5 +26,19 @@ class MedicalHoursDoctor extends _$MedicalHoursDoctor {
     }
 
     print('state de horas $state');
+  }
+
+  returnMedicalHours() {
+    return state;
+  }
+
+ bool selectedPredicatedMedicalHours(
+      DateTime date, List<MedicalHours> hours)  {
+    for (var h in hours) {
+      if (date == h.fecha) {
+        return true;
+      }
+    }
+    return false;
   }
 }

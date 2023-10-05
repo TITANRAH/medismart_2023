@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical-directory.dart';
-import 'package:medismart_2023/domain/entities/medical-hours-entity/medical-hours-entity.dart';
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 import 'package:medismart_2023/presentation/providers/medical_hours/medical_hours_provider.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
@@ -11,7 +10,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class SchedulingScreen extends ConsumerStatefulWidget {
   static const name = 'scheduling';
-late User user;
+  late User user;
   final int idDoctor;
   MedicalDirectory? doctor;
 
@@ -26,34 +25,29 @@ late User user;
 }
 
 class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
-  late List<MedicalHours> hours = [];
-  late User user; 
+  // late List<MedicalHours> hours = [];
+  late User user;
 
   @override
   void initState() {
     super.initState();
 
-   user = ref.read(userActiveProvider.notifier).returnUser();
+    user = ref.read(userActiveProvider.notifier).returnUser();
 
     widget.doctor = ref
         .read(medicalDirectoryDoctorsProvider.notifier)
         .filteredUniqueDoc(widget.idDoctor);
 
-           
     ref.read(medicalHoursDoctorProvider.notifier).getMedicalHours(
         widget.idDoctor,
         widget.doctor!.fechaText,
         26,
         widget.doctor!.fechaText,
         user.idCliente);
-
   }
 
   @override
   void didChangeDependencies() {
- 
-    hours = ref.watch(medicalHoursDoctorProvider);
-
     super.didChangeDependencies();
   }
 
@@ -65,6 +59,8 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
     final urlPhoto = Environments.urlServicios;
     final textStyleEspecialitie = Theme.of(context).textTheme.titleSmall;
     final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
+    final hours = ref.watch(medicalHoursDoctorProvider);
+
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavigation(),
       backgroundColor: colors.onPrimary,
@@ -143,49 +139,58 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: colors.primary),
-                          ),
-                          child: SfDateRangePicker(
-                            backgroundColor: colors.onPrimary,
-                            selectionTextStyle: const TextStyle(fontSize: 20),
-                            selectionMode: DateRangePickerSelectionMode.single,
-                            view: DateRangePickerView.month,
-                            selectionShape:
-                                DateRangePickerSelectionShape.rectangle,
-                            selectionColor: Colors
-                                .green, // Color de fondo de las fechas seleccionadas
-                            selectableDayPredicate: 
-                            // esto necesita estado y no lo esta teniendo
-                            
-                            (date) {
-                              for (var h in hours) {
-                                if (date == h.fecha) {
-                                  return true;
-                                }
-                              }
-                              return false;
-                            },
+                        hours.isNotEmpty
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: colors.primary),
+                                ),
+                                child: SfDateRangePicker(
+                                  backgroundColor: colors.onPrimary,
+                                  selectionTextStyle:
+                                      const TextStyle(fontSize: 20),
+                                  selectionMode:
+                                      DateRangePickerSelectionMode.single,
+                                  view: DateRangePickerView.month,
+                                  selectionShape:
+                                      DateRangePickerSelectionShape.rectangle,
+                                  selectionColor: Colors
+                                      .green, // Color de fondo de las fechas seleccionadas
+                                  selectableDayPredicate:
+                                      // esto necesita estado y no lo esta teniendo
+                                      (date) {
+                                    if (!ref
+                                        .read(
+                                            medicalHoursDoctorProvider.notifier)
+                                        .selectedPredicatedMedicalHours(
+                                            date, hours)) {
+                                      return false;
+                                    }
+                                    return true;
+                                  },
 
-                            todayHighlightColor: colors.inversePrimary,
-                            monthViewSettings: DateRangePickerMonthViewSettings(
-                              
-                              firstDayOfWeek: 1,
-                              specialDates: hours.map((h) => h.fecha!).toList(),
-                            ),
-                            headerStyle: DateRangePickerHeaderStyle(
-                              backgroundColor: colors.primary,
-                              textAlign: TextAlign.center,
-                              textStyle: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontSize: 15,
-                                letterSpacing: 5,
-                                color: colors.onPrimary,
+                                  todayHighlightColor: colors.inversePrimary,
+                                  monthViewSettings:
+                                      const DateRangePickerMonthViewSettings(
+                                    firstDayOfWeek: 1,
+                                  ),
+                                  headerStyle: DateRangePickerHeaderStyle(
+                                    backgroundColor: colors.primary,
+                                    textAlign: TextAlign.center,
+                                    textStyle: TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      letterSpacing: 5,
+                                      color: colors.onPrimary,
+                                    ),
+                                  ),
+                                ))
+                            : const SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 5.0,
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                         const SizedBox(
                           height: 10,
                         ),
