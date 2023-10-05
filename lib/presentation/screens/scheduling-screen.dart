@@ -184,11 +184,14 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     ),
                                   ),
                                 ))
-                            : const SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 5.0,
+                            : const Padding(
+                                padding: EdgeInsets.all(110),
+                                child: SizedBox(
+                                  width: 90,
+                                  height: 90,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 5.0,
+                                  ),
                                 ),
                               ),
                         const SizedBox(
