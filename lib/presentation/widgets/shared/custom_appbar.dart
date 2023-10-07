@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? iconColor;
@@ -17,17 +16,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       forceMaterialTransparency: true,
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: false,
       backgroundColor: backgroundColor,
-      leading: IconButton(
-        iconSize: 30,
-        color: iconColor,
-        icon: const Icon(
-            Icons.arrow_back_ios_new_outlined), // Icono a la izquierda
-        onPressed: () {
-          context.pop();
-        },
-      ),
+
+      // leading: IconButton(
+      //   iconSize: 30,
+      //   color: iconColor,
+      //   icon: const Icon(
+      //       Icons.arrow_back_ios_new_outlined), // Icono a la izquierda
+      //   onPressed: () {
+      //     context.pop();
+      //   },
+      // ),
       actions: [
         IconButton(
           iconSize: 30,

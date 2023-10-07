@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/config/utils/utils.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
-import 'package:medismart_2023/presentation/providers/avalaible_medical_hours/avalaible_medical_hours_provider.dart';
-import 'package:medismart_2023/presentation/providers/medical_hours/medical_hours_provider.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -42,9 +41,9 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
         .read(medicalHoursDoctorProvider.notifier)
         .getMedicalHours(widget.idDoctor, widget.doctor!.fechaText, 26, widget.doctor!.fechaText, user.idCliente);
 
-
-    ref.read(avalaibleMedicalHoursProvider.notifier).getAvalaibleHours(formatedFechaForAvalaiblesHoursInit(widget.doctor!.fechaText!), widget.idDoctor, 26, user.userId!);
-
+    ref
+        .read(avalaibleMedicalHoursProvider.notifier)
+        .getAvalaibleHours(formatedFechaForAvalaiblesHoursInit(widget.doctor!.fechaText!), widget.idDoctor, 26, user.userId!);
   }
 
   @override
@@ -60,7 +59,27 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
     final urlPhoto = Environments.urlServicios;
     final textStyleEspecialitie = Theme.of(context).textTheme.titleSmall;
     final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
+    final hoursAvalaibles = ref.watch(avalaibleMedicalHoursProvider);
     final hours = ref.watch(medicalHoursDoctorProvider);
+    int currentIndex = 0;
+
+    void scrollBackward() {
+      setState(() {
+        currentIndex = currentIndex - 4;
+        if (currentIndex < 0) {
+          currentIndex = 0;
+        }
+      });
+    }
+
+    void scrollForward() {
+      setState(() {
+        currentIndex = currentIndex + 4;
+        if (currentIndex >= hoursAvalaibles.length) {
+          currentIndex = hoursAvalaibles.length - 1;
+        }
+      });
+    }
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavigation(),
@@ -243,7 +262,9 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                 IconButton(
                                     color: colors.inversePrimary,
                                     iconSize: 30,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      scrollBackward();
+                                    },
                                     icon: const Icon(Icons.arrow_back_ios_new_sharp)),
                                 Text(
                                   '19:00',
@@ -256,7 +277,9 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                 IconButton(
                                     color: colors.inversePrimary,
                                     iconSize: 30,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      scrollForward();
+                                    },
                                     icon: const Icon(Icons.arrow_forward_ios_rounded)),
                               ],
                             )
@@ -265,9 +288,34 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Divider()
+                        const Divider(),
                       ],
                     ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                          maxHeight: 100, // Establece la altura máxima deseada
+                          maxWidth: double.infinity),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: hoursAvalaibles.length,
+                        itemBuilder: (context, index) {
+                          final item = hoursAvalaibles[index];
+
+                          print(item);
+
+                          return SizedBox(
+                            width: 100, // Establece el ancho deseado
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                item.horaDesdeText,
+                                style: textStyleNameDoctor!.copyWith(color: colors.primary, fontSize: 25, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -285,6 +333,20 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
               ),
             const SizedBox(
               height: 20,
+            ),
+            SizedBox(
+              width: 200,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
+                  ),
+                ),
+                onPressed: () {
+                  context.pop();
+                },
+                child: const Text('Volver'),
+              ),
             ),
             Powered(
               color: colors.primary,

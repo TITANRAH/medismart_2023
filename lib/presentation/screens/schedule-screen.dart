@@ -65,7 +65,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     }
 
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNavigation(),
+      bottomNavigationBar: CustomBottomNavigation(),
       backgroundColor: colors.onPrimary,
       appBar: CustomAppBar(
         backgroundColor: colors.onPrimary,

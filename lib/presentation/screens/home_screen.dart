@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/utils/utils.dart';
+import 'package:medismart_2023/presentation/providers/custom_bottom_navigation_provider/custom_bottom_navigation_provider.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 
 import '../providers/user/user_provider.dart';
@@ -19,8 +20,7 @@ class HomeScreen extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
       extendBody: true,
-      appBar: CustomAppBar(
-          backgroundColor: colors.primary, iconColor: colors.onPrimary),
+      appBar: CustomAppBar(backgroundColor: colors.primary, iconColor: colors.onPrimary),
       // bottomNavigationBar: const CustomBottomNavigation(),
       backgroundColor: colors.primary,
       body: SingleChildScrollView(
@@ -97,7 +97,7 @@ class _ServicesListState extends ConsumerState<_ServicesList> {
   }
 }
 
-class _CardService extends StatelessWidget {
+class _CardService extends ConsumerWidget {
   final String? icon;
   final String? text;
   final String? subText;
@@ -113,11 +113,20 @@ class _CardService extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final titleStyle = Theme.of(context).textTheme.titleMedium;
     final colors = Theme.of(context).colorScheme;
     return GestureDetector(
-      onTap: () => context.push('/schedule', extra: typeService),
+      onTap: () {
+        print('ruta $route');
+
+        ref.read(customBottomNavigationProviderProvider.notifier).changeEnableState(route!);
+        if (route == '/schedule') {
+          context.push('/schedule', extra: typeService);
+        } else {
+          context.push(route!);
+        }
+      },
       child: Card(
         color: colors.onSecondary,
         shape: const RoundedRectangleBorder(
@@ -192,9 +201,7 @@ class _Saludo extends ConsumerWidget {
                 text: saludo,
                 style: titleStyle!.copyWith(color: colors.onSecondary),
                 children: [
-                  TextSpan(
-                      text: user.name,
-                      style: titleStyle.copyWith(color: Colors.amber.shade800)),
+                  TextSpan(text: user.name, style: titleStyle.copyWith(color: Colors.amber.shade800)),
                   TextSpan(
                     text: '\n $segundoSaludo',
                     style: titleStyle.copyWith(color: colors.onPrimary),

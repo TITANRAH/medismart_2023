@@ -24,7 +24,7 @@ GoRouter appRouter(AppRouterRef ref) {
       name: ScheduleScreen.name,
       // builder: (context, state) => const ScheduleScreen(),
       builder: (context, state) {
-         final tipoServicio = state.extra! as String;
+         final tipoServicio = state.extra! as String?;
             return ScheduleScreen(
               tipoServicio: tipoServicio,
             );
