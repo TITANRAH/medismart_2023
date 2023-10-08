@@ -7,12 +7,12 @@ part of 'avalaible_medical_hours_provider.dart';
 // **************************************************************************
 
 String _$avalaibleMedicalHoursHash() =>
-    r'169f5a0e2841ee16dfe7eda07159b589bafef406';
+    r'fa94d4e3916b20848683bcff00f34244742de9c2';
 
 /// See also [AvalaibleMedicalHours].
 @ProviderFor(AvalaibleMedicalHours)
-final avalaibleMedicalHoursProvider = NotifierProvider<AvalaibleMedicalHours,
-    List<AvalaibleMedicalHoursEntity>>.internal(
+final avalaibleMedicalHoursProvider = AutoDisposeNotifierProvider<
+    AvalaibleMedicalHours, List<AvalaibleMedicalHoursEntity>>.internal(
   AvalaibleMedicalHours.new,
   name: r'avalaibleMedicalHoursProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,7 @@ final avalaibleMedicalHoursProvider = NotifierProvider<AvalaibleMedicalHours,
   allTransitiveDependencies: null,
 );
 
-typedef _$AvalaibleMedicalHours = Notifier<List<AvalaibleMedicalHoursEntity>>;
+typedef _$AvalaibleMedicalHours
+    = AutoDisposeNotifier<List<AvalaibleMedicalHoursEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -219,22 +219,31 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(10)),
-                              child: const Column(
-                                children: [
-                                  Text(
-                                    'Agenda',
-                                    style: TextStyle(color: Colors.orange),
-                                  ),
-                                  Text(
-                                    'De 19hrs. a 20hrs.',
-                                    style: TextStyle(color: Colors.orange),
-                                  )
-                                ],
-                              ),
-                            ),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(10)),
+                                child: ref.read(avalaibleMedicalHoursProvider.notifier).getRangeHurs() != ''
+                                    ? Column(
+                                        children: [
+                                          const Text(
+                                            'Agenda',
+                                            style: TextStyle(color: Colors.orange),
+                                          ),
+                                          Text(
+                                            ref.read(avalaibleMedicalHoursProvider.notifier).getRangeHurs(),
+                                            style: const TextStyle(color: Colors.orange),
+                                          )
+                                        ],
+                                      )
+                                    : const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 61, vertical: 2.3),
+                                        child: CircularProgressIndicator(
+                                          color: Colors.orange,
+                                          strokeWidth: 2,
+                                        ),
+                                      )),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 IconButton(
                                     color: colors.inversePrimary,
@@ -243,12 +252,20 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                       ref.read(avalaibleMedicalHoursProvider.notifier).showPrevious();
                                     },
                                     icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-                                Text(
-                                  '19:00',
-                                  style: titleStyleM.copyWith(
-                                    color: colors.inversePrimary,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
+                                SizedBox(
+                                  height: 45,
+                                  width: 80,
+                                  child: ListView.builder(
+                                    itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length > 1
+                                        ? 1
+                                        : ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
+                                    itemBuilder: (context, index) {
+                                      final hour = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
+
+                                      final hourBlock = '${hour.horaDesdeText.split(':')[0]}:00';
+
+                                      return Text(hourBlock, style: textStyleNameDoctor!.copyWith(color: colors.inversePrimary, fontSize: 30));
+                                    },
                                   ),
                                 ),
                                 IconButton(
@@ -508,7 +525,7 @@ otra persona que no sea el titular
                       child: FilledButton(
                         style: FilledButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         onPressed: () {},

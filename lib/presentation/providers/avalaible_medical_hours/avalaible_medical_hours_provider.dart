@@ -6,14 +6,14 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 part 'avalaible_medical_hours_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   final impl = AvalaibleMedicalHoursRepositoryImpl(AvalaibleMedicalHoursDatasource());
-  String fechaSelect = '';
 
+  String fechaSelect = '';
   int startIndex = 0;
   int endIndex = 3;
-
+  // bool isLoading = false;
   List<AvalaibleMedicalHoursEntity> hoursItemCount = [];
 
   @override
@@ -43,6 +43,9 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     print('fecha desde provider getAvalaibleHours $fecha');
     print('idMedico getAvalaibleHours $idMedico');
     print('idPaciente getAvalaibleHours $idPaciente');
+    // isLoading = true;
+    startIndex = 0;
+    endIndex = 3;
     final availablesHours = await impl.getAvalaibleMedicalHours(
       fecha,
       idMedico,
@@ -55,7 +58,9 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
 
     if (availablesHours.isNotEmpty) {
       state = hoursSelectedDate(availablesHours.toSet().toList(), fecha);
+      // isLoading = false;
     } else {
+      // isLoading = false;
       state = [];
     }
 
@@ -73,7 +78,7 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     return hoursDate;
   }
 
-  visibleHours() {
+  List<AvalaibleMedicalHoursEntity> visibleHours() {
     print('entrop al visible');
     final availableHours = state;
 
@@ -83,9 +88,12 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
 
     startIndex = startIndex.clamp(0, availableHours.length - 1).toInt();
 
-    final endIndex = (startIndex + 3).clamp(0, availableHours.length - 1).toInt();
+    var endIndex = (startIndex + 3).clamp(0, availableHours.length - 1).toInt();
 
-    return availableHours.sublist(startIndex, endIndex + 1);
+    // Ordena las horas por la primera hora antes de devolverlas
+    final orderedHours = availableHours.sublist(startIndex, endIndex + 1)..sort((a, b) => a.horaDesde.compareTo(b.horaDesde));
+
+    return orderedHours;
   }
 
   void showNext() {
@@ -107,5 +115,22 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     }
 
     state = [...state.toSet().toList()];
+  }
+
+  String getRangeHurs() {
+    List<AvalaibleMedicalHoursEntity> rangeHours = state;
+    if (rangeHours.isEmpty) {
+      return ""; // Maneja el caso de que no haya horas disponibles
+    }
+
+    // Asegura que las horas estén ordenadas cronológicamente
+
+    final primeraHora = rangeHours.first.horaDesdeText; // Obtiene la primera hora
+    final ultimaHora = rangeHours.last.horaDesdeText; // Obtiene la última hora
+
+    // Construye el mensaje de rango horario
+    final mensaje = "De ${primeraHora}hrs. a ${ultimaHora}hrs.";
+
+    return mensaje;
   }
 }
