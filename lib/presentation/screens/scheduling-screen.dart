@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/config/utils/utils.dart';
+import 'package:medismart_2023/domain/entities/avalaible-medical-hours-entity/avalaible_medical_hours_entity.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
@@ -245,7 +246,6 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     iconSize: 30,
                                     onPressed: () {
                                       ref.read(avalaibleMedicalHoursProvider.notifier).showPrevious();
-                                      
                                     },
                                     icon: const Icon(Icons.arrow_back_ios_new_sharp)),
                                 Text(
@@ -281,15 +281,18 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                         scrollDirection: Axis.horizontal,
                         itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
                         itemBuilder: (context, index) {
-                          final item = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
+                          final AvalaibleMedicalHoursEntity item = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
 
                           return SizedBox(
                             width: 100, // Establece el ancho deseado
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: item.nombrePaciente == 'Ocupado' ? null : () {},
                               child: Text(
                                 item.horaDesdeText,
-                                style: textStyleNameDoctor!.copyWith(color: colors.primary, fontSize: 25, fontWeight: FontWeight.w600),
+                                style: textStyleNameDoctor!.copyWith(
+                                    color: item.nombrePaciente == 'Ocupado' ? Colors.grey : colors.primary,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
                           );
