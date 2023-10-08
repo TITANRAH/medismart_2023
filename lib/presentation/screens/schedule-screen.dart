@@ -293,11 +293,14 @@ class _BoxDoctor extends StatelessWidget {
               },
             ),
           )
-        : Center(
-            child: Text(
-            'SIN PROFESIONALES PARA ESTA ESPECIALIDAD',
-            style: textStyleEspecialitie!.copyWith(color: colors.primary),
-          ));
+        : Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Center(
+                child: Text(
+              'Sin profesionales disponibles, momentáneamente.',
+              style: textStyleEspecialitie!.copyWith(color: colors.primary, fontSize: 15),
+            )),
+          );
   }
 }
 
@@ -315,6 +318,7 @@ class _CustomDropdown extends ConsumerWidget {
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme.labelLarge;
     final currentValue = ref.read(medicalDirectoryDoctorsProvider.notifier).currentValueEspecialitie;
+    final medicalDirectory = ref.watch(medicalDirectoryDoctorsProvider);
     final user = ref.watch(userActiveProvider);
 
     return especialities.isNotEmpty
@@ -328,7 +332,9 @@ class _CustomDropdown extends ConsumerWidget {
             ),
             child: DropdownButtonFormField<String>(
               key: UniqueKey(),
-              value: currentValue,
+              value: medicalDirectory.isNotEmpty
+                  ? currentValue
+                  : ref.read(medicalDirectoryDoctorsProvider.notifier).getCurrentEspecialitie('Selecciona una especialidad'),
               isExpanded: true,
               itemHeight: 50,
               menuMaxHeight: 400,

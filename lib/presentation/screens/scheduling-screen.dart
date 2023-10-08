@@ -252,22 +252,28 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                       ref.read(avalaibleMedicalHoursProvider.notifier).showPrevious();
                                     },
                                     icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-                                SizedBox(
-                                  height: 45,
-                                  width: 80,
-                                  child: ListView.builder(
-                                    itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length > 1
-                                        ? 1
-                                        : ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
-                                    itemBuilder: (context, index) {
-                                      final hour = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
+                                ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().isNotEmpty
+                                    ? SizedBox(
+                                        height: 45,
+                                        width: 80,
+                                        child: ListView.builder(
+                                          itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length > 1
+                                              ? 1
+                                              : ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
+                                          itemBuilder: (context, index) {
+                                            final hour = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
 
-                                      final hourBlock = '${hour.horaDesdeText.split(':')[0]}:00';
+                                            final hourBlock = '${hour.horaDesdeText.split(':')[0]}:00';
 
-                                      return Text(hourBlock, style: textStyleNameDoctor!.copyWith(color: colors.inversePrimary, fontSize: 30));
-                                    },
-                                  ),
-                                ),
+                                            return Text(hourBlock,
+                                                style: textStyleNameDoctor!.copyWith(color: colors.inversePrimary, fontSize: 30));
+                                          },
+                                        ),
+                                      )
+                                    : CircularProgressIndicator(
+                                        color: colors.inversePrimary,
+                                        strokeWidth: 2,
+                                      ),
                                 IconButton(
                                     color: colors.inversePrimary,
                                     iconSize: 30,
