@@ -6,13 +6,13 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 part 'avalaible_medical_hours_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   final impl = AvalaibleMedicalHoursRepositoryImpl(AvalaibleMedicalHoursDatasource());
   String fechaSelect = '';
-  int _startIndex = 0; // Inicializa el valor inicial de startIndex
-  int _endIndex = 3; // Inicializa el valor inicial de endIndex
-  dynamic intemCount;
+
+  int startIndex = 0;
+  int endIndex = 3;
 
   List<AvalaibleMedicalHoursEntity> hoursItemCount = [];
 
@@ -73,66 +73,39 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     return hoursDate;
   }
 
-  getStartEnd() {
-    return _endIndex - _startIndex + 1;
+  visibleHours() {
+    print('entrop al visible');
+    final availableHours = state;
+
+    if (availableHours.isEmpty) {
+      return [];
+    }
+
+    startIndex = startIndex.clamp(0, availableHours.length - 1).toInt();
+
+    final endIndex = (startIndex + 3).clamp(0, availableHours.length - 1).toInt();
+
+    return availableHours.sublist(startIndex, endIndex + 1);
   }
 
-// void showPrevious() {
-//       print('previus');
+  void showNext() {
+    final availableHours = state;
+    if (availableHours.isNotEmpty && startIndex + 4 < availableHours.length) {
+      startIndex += 4;
+    } else if (startIndex + 4 < availableHours.length) {
+      startIndex = availableHours.length - 4;
+    }
 
-//       if (_startIndex >= 4) {
-//         _startIndex = _startIndex - 4;
-//         _endIndex = _endIndex - 4;
-
-//       }
-//       print('startIndex $_startIndex');
-//       print('endIndex $_endIndex');
-//     }
-
-//     void showNext() {
-//       if (_endIndex + 4 < state.length) {
-//         print('next');
-//         _startIndex = _startIndex + 4;
-//         _endIndex = _endIndex + 4;
-//       }
-
-//       print('startIndex $_startIndex');
-//       print('endIndex $_endIndex');
-//     }
-
-  // Métodos para obtener los valores actuales de inicio y final
-  int getStart() => _startIndex;
-  int getEnd() => _endIndex;
-
-  // Método para incrementar el valor de inicio
-  void incrementStart(int value) {
-    print('i s');
-    _startIndex += value;
+    state = [...state.toSet().toList()];
   }
 
-  // Método para decrementar el valor de inicio
-  void decrementStart(int value) {
-    print('d s');
-    _startIndex -= value;
-  }
+  void showPrevious() {
+    if (startIndex - 4 >= 0) {
+      startIndex -= 4;
+    } else {
+      startIndex = 0;
+    }
 
-  // Método para incrementar el valor de final
-  void incrementEnd(int value) {
-    print('i e');
-    _endIndex += value;
-  }
-
-  // Método para decrementar el valor de final
-  void decrementEnd(int value) {
-    print('d e');
-    _endIndex -= value;
-  }
-
-  itemCount(int count) {
-    intemCount = count;
-  }
-
-  itemCountReturn() {
-    return intemCount;
+    state = [...state.toSet().toList()];
   }
 }

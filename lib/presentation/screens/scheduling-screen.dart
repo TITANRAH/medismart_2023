@@ -59,27 +59,8 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
     final urlPhoto = Environments.urlServicios;
     final textStyleEspecialitie = Theme.of(context).textTheme.titleSmall;
     final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
-    final hoursAvalaibles = ref.watch(avalaibleMedicalHoursProvider);
     final hours = ref.watch(medicalHoursDoctorProvider);
-    int currentIndex = 0;
-
-    void scrollBackward() {
-      setState(() {
-        currentIndex = currentIndex - 4;
-        if (currentIndex < 0) {
-          currentIndex = 0;
-        }
-      });
-    }
-
-    void scrollForward() {
-      setState(() {
-        currentIndex = currentIndex + 4;
-        if (currentIndex >= hoursAvalaibles.length) {
-          currentIndex = hoursAvalaibles.length - 1;
-        }
-      });
-    }
+    final hoursEnabled = ref.watch(avalaibleMedicalHoursProvider);
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavigation(),
@@ -263,7 +244,8 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     color: colors.inversePrimary,
                                     iconSize: 30,
                                     onPressed: () {
-                                      scrollBackward();
+                                      ref.read(avalaibleMedicalHoursProvider.notifier).showPrevious();
+                                      
                                     },
                                     icon: const Icon(Icons.arrow_back_ios_new_sharp)),
                                 Text(
@@ -278,7 +260,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     color: colors.inversePrimary,
                                     iconSize: 30,
                                     onPressed: () {
-                                      scrollForward();
+                                      ref.read(avalaibleMedicalHoursProvider.notifier).showNext();
                                     },
                                     icon: const Icon(Icons.arrow_forward_ios_rounded)),
                               ],
@@ -297,11 +279,9 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           maxWidth: double.infinity),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: hoursAvalaibles.length,
+                        itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
                         itemBuilder: (context, index) {
-                          final item = hoursAvalaibles[index];
-
-                          print(item);
+                          final item = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
 
                           return SizedBox(
                             width: 100, // Establece el ancho deseado
