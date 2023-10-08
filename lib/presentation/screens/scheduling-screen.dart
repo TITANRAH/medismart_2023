@@ -48,11 +48,6 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final titleStyleM = Theme.of(context).textTheme.bodyLarge;
@@ -61,7 +56,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
     final textStyleEspecialitie = Theme.of(context).textTheme.titleSmall;
     final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
     final hours = ref.watch(medicalHoursDoctorProvider);
-    final hoursEnabled = ref.watch(avalaibleMedicalHoursProvider);
+    ref.watch(avalaibleMedicalHoursProvider);
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavigation(),
