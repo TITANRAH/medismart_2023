@@ -28,13 +28,13 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   void didChangeDependencies() {
     final user = ref.watch(userActiveProvider);
 
-    ref.read(especialitiesProvider.notifier).getEspecialities(user.userId,
-        user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
+    ref
+        .read(especialitiesProvider.notifier)
+        .getEspecialities(user.userId, user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
 
-    ref.read(medicalDirectoryDoctorsProvider.notifier).getMedicalDirectory(
-        user.userId,
-        user.idCliente,
-        widget.tipoServicio != '' ? widget.tipoServicio : 'S');
+    ref
+        .read(medicalDirectoryDoctorsProvider.notifier)
+        .getMedicalDirectory(user.userId, user.idCliente, widget.tipoServicio != '' ? widget.tipoServicio : 'S');
     super.didChangeDependencies();
   }
 
@@ -49,23 +49,17 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     final medicalDirectory = ref.watch(medicalDirectoryDoctorsProvider);
 
     void selectService(String serviceType) {
-      ref
-          .read(especialitiesProvider.notifier)
-          .getEspecialities(user.userId, user.idCliente, serviceType);
+      ref.read(especialitiesProvider.notifier).getEspecialities(user.userId, user.idCliente, serviceType);
 
       widget.tipoServicio = serviceType;
 
-      ref
-          .read(medicalDirectoryDoctorsProvider.notifier)
-          .getCurrentEspecialitie('Selecciona una especialidad');
+      ref.read(medicalDirectoryDoctorsProvider.notifier).getCurrentEspecialitie('Selecciona una especialidad');
 
-      ref
-          .read(medicalDirectoryDoctorsProvider.notifier)
-          .getMedicalDirectory(user.userId, user.idCliente, serviceType);
+      ref.read(medicalDirectoryDoctorsProvider.notifier).getMedicalDirectory(user.userId, user.idCliente, serviceType);
     }
 
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavigation(),
+      bottomNavigationBar: const CustomBottomNavigation(),
       backgroundColor: colors.onPrimary,
       appBar: CustomAppBar(
         backgroundColor: colors.onPrimary,
@@ -90,57 +84,59 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          selectService('S');
-                        },
-                        child: _BoxService(
-                          iconBox: './assets/svg/icon_tuplanempresa_g.svg',
-                          textService: 'TU PLAN EMPRESA',
-                          isActiveBox:
-                              widget.tipoServicio == 'S' ? true : false,
-                          height: 70,
-                          width: 70,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          selectService('O');
-                        },
-                        child: _BoxService(
-                          iconBox: './assets/svg/medicina-especialista.svg',
-                          textService: 'MEDICINA ESPECIALISTA',
-                          isActiveBox:
-                              widget.tipoServicio == 'O' ? true : false,
-                          height: 70,
-                          width: 70,
-                        ),
-                      ),
+                      !ref.read(medicalDirectoryDoctorsProvider.notifier).isLoadingTipoS
+                          ? GestureDetector(
+                              onTap: () {
+                                selectService('S');
+                              },
+                              child: _BoxService(
+                                iconBox: './assets/svg/icon_tuplanempresa_g.svg',
+                                textService: 'TU PLAN EMPRESA',
+                                isActiveBox: widget.tipoServicio == 'S' ? true : false,
+                                height: 70,
+                                width: 70,
+                              ),
+                            )
+                          : _CustomerCircular(colors: colors),
+                      !ref.read(medicalDirectoryDoctorsProvider.notifier).isLoadingTipoO
+                          ? GestureDetector(
+                              onTap: () {
+                                selectService('O');
+                              },
+                              child: _BoxService(
+                                iconBox: './assets/svg/medicina-especialista.svg',
+                                textService: 'MEDICINA ESPECIALISTA',
+                                isActiveBox: widget.tipoServicio == 'O' ? true : false,
+                                height: 70,
+                                width: 70,
+                              ),
+                            )
+                          : _CustomerCircular(colors: colors)
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      selectService('V');
-                    },
-                    child: _BoxService(
-                      iconBox: './assets/svg/wellnes-b.svg',
-                      textService: 'LIFESTYLE & WELLNES',
-                      isActiveBox: widget.tipoServicio == 'V' ? true : false,
-                      height: 70,
-                      width: 70,
-                    ),
-                  ),
+                  !ref.read(medicalDirectoryDoctorsProvider.notifier).isLoadingTipoV
+                      ? GestureDetector(
+                          onTap: () {
+                            selectService('V');
+                          },
+                          child: _BoxService(
+                            iconBox: './assets/svg/wellnes-b.svg',
+                            textService: 'LIFESTYLE & WELLNES',
+                            isActiveBox: widget.tipoServicio == 'V' ? true : false,
+                            height: 70,
+                            width: 70,
+                          ),
+                        )
+                      : _CustomerCircular(colors: colors)
                 ],
               ),
               const SizedBox(
                 height: 40,
               ),
-              _CustomDropdown(
-                  especialities: especialities,
-                  typeService: widget.tipoServicio!),
+              _CustomDropdown(especialities: especialities, typeService: widget.tipoServicio!),
               const SizedBox(
                 height: 10,
               ),
@@ -156,7 +152,9 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                       child: SizedBox(
                           width: 100,
                           height: 100,
-                          child: CircularProgressIndicator()),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          )),
                     ),
               const SizedBox(
                 height: 20,
@@ -164,6 +162,29 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               _SwiperCustom()
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomerCircular extends StatelessWidget {
+  const _CustomerCircular({
+    required this.colors,
+  });
+
+  final ColorScheme colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 160,
+      height: 140,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+        child: CircularProgressIndicator(
+          color: colors.primary,
+          strokeWidth: 2,
         ),
       ),
     );
@@ -198,8 +219,7 @@ class _BoxDoctor extends StatelessWidget {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 13),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        8), // Establece el radio del borde en cero
+                    borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
                   ),
                   color: Colors.white,
                   child: Padding(
@@ -213,27 +233,20 @@ class _BoxDoctor extends StatelessWidget {
                                 width: 100,
                                 height: 100,
                                 child: CircleAvatar(
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el círculo no tenga un fondo de color
+                                    backgroundColor: Colors.transparent, // Fondo transparente para que el círculo no tenga un fondo de color
                                     child: ClipOval(
                                         child: doctor.fotoPerfil != null
                                             ? Image.network(
                                                 urlPhoto + doctor.fotoPerfil!,
-                                                fit: BoxFit
-                                                    .cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
-                                                width:
-                                                    100, // Ancho de la imagen dentro del círculo
-                                                height:
-                                                    100, // Altura de la imagen dentro del círculo
+                                                fit: BoxFit.cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
+                                                width: 100, // Ancho de la imagen dentro del círculo
+                                                height: 100, // Altura de la imagen dentro del círculo
                                               )
                                             : Image.asset(
                                                 './assets/img/loading.gif',
-                                                fit: BoxFit
-                                                    .cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
-                                                width:
-                                                    100, // Ancho de la imagen dentro del círculo
-                                                height:
-                                                    100, // Altura de la imagen dentro del círculo
+                                                fit: BoxFit.cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
+                                                width: 100, // Ancho de la imagen dentro del círculo
+                                                height: 100, // Altura de la imagen dentro del círculo
                                               )))),
                             const SizedBox(
                               width: 20,
@@ -243,26 +256,18 @@ class _BoxDoctor extends StatelessWidget {
                               children: [
                                 Text(
                                   doctor.nombreMedico!.toUpperCase(),
-                                  style: textStyleNameDoctor!.copyWith(
-                                      color: const Color.fromARGB(
-                                          255, 138, 143, 168),
-                                      fontWeight: FontWeight.w900),
+                                  style: textStyleNameDoctor!
+                                      .copyWith(color: const Color.fromARGB(255, 138, 143, 168), fontWeight: FontWeight.w900),
                                 ),
                                 Text(
                                   doctor.especialidad!,
-                                  style: textStyleEspecialitie!.copyWith(
-                                      color: const Color.fromARGB(
-                                          255, 138, 143, 168),
-                                      fontWeight: FontWeight.w900),
+                                  style: textStyleEspecialitie!
+                                      .copyWith(color: const Color.fromARGB(255, 138, 143, 168), fontWeight: FontWeight.w900),
                                 ),
-                                Text('Atención más cercana'.toUpperCase(),
-                                    style: textStyleEspecialitie!.copyWith(
-                                        color: colors.inversePrimary)),
+                                Text('Atención más cercana'.toUpperCase(), style: textStyleEspecialitie!.copyWith(color: colors.inversePrimary)),
                                 Text(
                                   '${doctor.fechaText} - ${doctor.horadesDeText}',
-                                  style: textStyleDate!.copyWith(
-                                      color: colors.primary,
-                                      fontWeight: FontWeight.bold),
+                                  style: textStyleDate!.copyWith(color: colors.primary, fontWeight: FontWeight.bold),
                                 ),
                               ],
                             )
@@ -273,8 +278,7 @@ class _BoxDoctor extends StatelessWidget {
                           child: FilledButton(
                               style: FilledButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Establece el radio del borde en cero
+                                  borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
                                 ),
                               ),
                               onPressed: () {
@@ -310,9 +314,7 @@ class _CustomDropdown extends ConsumerWidget {
     // var currentValue = 'Selecciona una especialidad';
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme.labelLarge;
-    final currentValue = ref
-        .read(medicalDirectoryDoctorsProvider.notifier)
-        .currentValueEspecialitie;
+    final currentValue = ref.read(medicalDirectoryDoctorsProvider.notifier).currentValueEspecialitie;
     final user = ref.watch(userActiveProvider);
 
     return especialities.isNotEmpty
@@ -348,8 +350,7 @@ class _CustomDropdown extends ConsumerWidget {
                       onTap: (() {
                         ref
                             .read(medicalDirectoryDoctorsProvider.notifier)
-                            .filteredDoctors(currentValue, item.code!,
-                                user.userId!, typeService, user.idCliente!);
+                            .filteredDoctors(currentValue, item.code!, user.userId!, typeService, user.idCliente!);
                       }),
                       value: item.detail,
                       child: Center(
@@ -362,16 +363,14 @@ class _CustomDropdown extends ConsumerWidget {
                   )
                   .toList(),
               onChanged: (item) {
-                ref
-                    .read(medicalDirectoryDoctorsProvider.notifier)
-                    .getCurrentEspecialitie(item!);
+                ref.read(medicalDirectoryDoctorsProvider.notifier).getCurrentEspecialitie(item!);
               },
             ))
         : Container();
   }
 }
 
-class _BoxService extends StatelessWidget {
+class _BoxService extends ConsumerWidget {
   final String iconBox;
   final String textService;
   final bool isActiveBox;
@@ -387,7 +386,7 @@ class _BoxService extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme.bodySmall;
 
@@ -457,9 +456,7 @@ class _SwiperCustom extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Image.asset(
-              index == 0
-                  ? './assets/img/325x130-1.png'
-                  : './assets/img/325x130.png',
+              index == 0 ? './assets/img/325x130-1.png' : './assets/img/325x130.png',
               fit: BoxFit.fill,
             ),
           );

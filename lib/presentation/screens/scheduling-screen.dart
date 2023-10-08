@@ -185,7 +185,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                   width: 90,
                                   height: 90,
                                   child: CircularProgressIndicator(
-                                    strokeWidth: 5.0,
+                                    strokeWidth: 2,
                                   ),
                                 ),
                               ),
@@ -286,15 +286,18 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           return SizedBox(
                             width: 100, // Establece el ancho deseado
                             child: TextButton(
-                              onPressed: item.nombrePaciente == 'Ocupado' ? null : () {},
-                              child: Text(
-                                item.horaDesdeText,
-                                style: textStyleNameDoctor!.copyWith(
-                                    color: item.nombrePaciente == 'Ocupado' ? Colors.grey : colors.primary,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
+                                onPressed: item.nombrePaciente == 'Ocupado' ? null : () {},
+                                child: hours.isNotEmpty
+                                    ? Text(
+                                        item.horaDesdeText,
+                                        style: textStyleNameDoctor!.copyWith(
+                                            color: item.nombrePaciente == 'Ocupado' ? Colors.grey : colors.primary,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w600),
+                                      )
+                                    : const CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      )),
                           );
                         },
                       ),

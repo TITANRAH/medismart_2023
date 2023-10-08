@@ -7,7 +7,7 @@ part of 'medical_directory_provider.dart';
 // **************************************************************************
 
 String _$medicalDirectoryDoctorsHash() =>
-    r'9d0c460ad0d604d7b3b20c30a6e571b7c0e7cda5';
+    r'a96c7f3722b3ee0d7d7837a0b78e42ce9e6fec01';
 
 /// See also [MedicalDirectoryDoctors].
 @ProviderFor(MedicalDirectoryDoctors)

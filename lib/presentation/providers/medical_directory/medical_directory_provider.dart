@@ -11,6 +11,9 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
   final impl = MedicalDirectoryRepositoryImpl(MedicalDirectoryDatasource());
   late String currentValueEspecialitie = 'Selecciona una especialidad';
   bool isLoading = false;
+  bool isLoadingTipoO = false;
+  bool isLoadingTipoS = false;
+  bool isLoadingTipoV = false;
 
   @override
   List<MedicalDirectory> build() {
@@ -18,15 +21,28 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
   }
 
   Future<void> getMedicalDirectory(idUsuario, idCliente, tipo) async {
+    if (tipo == 'O') {
+      isLoadingTipoO = true;
+    } else if (tipo == 'S') {
+      isLoadingTipoS = true;
+    } else if (tipo == 'V') {
+      isLoadingTipoV = true;
+    }
+
     isLoading = true;
-    final directory =
-        await impl.getMedicalDirectory(idUsuario, idCliente, tipo);
+    final directory = await impl.getMedicalDirectory(idUsuario, idCliente, tipo);
 
     if (directory.isNotEmpty) {
+      isLoadingTipoO = false;
+      isLoadingTipoS = false;
+      isLoadingTipoV = false;
       isLoading = false;
       state = directory.toSet().toList();
     } else {
       isLoading = false;
+      isLoadingTipoO = false;
+      isLoadingTipoS = false;
+      isLoadingTipoV = false;
       state = [];
     }
 
@@ -39,8 +55,7 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
     return currentValueEspecialitie;
   }
 
-  filteredDoctors(String currentValue, int codeEspecialitie, int userId,
-      String typeService, int idClient
+  filteredDoctors(String currentValue, int codeEspecialitie, int userId, String typeService, int idClient
       // llamar al tipo de servicio
       ) {
     // Aplica el filtrado a la lista de médicos
@@ -63,8 +78,7 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
   }
 
   filteredUniqueDoc(int idDoctor) {
-    final doctor =
-        state.firstWhere((doc) => doc.idMedico == idDoctor);
+    final doctor = state.firstWhere((doc) => doc.idMedico == idDoctor);
 
     return doctor;
   }
