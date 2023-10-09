@@ -1,5 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/config/utils/utils.dart';
@@ -8,6 +10,7 @@ import 'package:medismart_2023/domain/entities/medical-directory/medical_directo
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
 import 'package:medismart_2023/presentation/providers/checkbox_provider/checkbox_provider.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
+import 'package:medismart_2023/presentation/providers/toast_provider/toast_provider.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -107,74 +110,82 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FilledButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(colors.inversePrimary),
-                                ),
-                                onPressed: () {},
-                                child: const Padding(
-                                  padding: EdgeInsets.all(2.0),
-                                  child: Text('MAÑANA'),
-                                )),
+                            FadeIn(
+                              duration: const Duration(milliseconds: 2000),
+                              child: FilledButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(colors.inversePrimary),
+                                  ),
+                                  onPressed: () {},
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: Text('MAÑANA'),
+                                  )),
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
-                            FilledButton(
-                                style: const ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(Colors.orange),
-                                ),
-                                onPressed: () {},
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('TARDE'),
-                                )),
+                            FadeIn(
+                              duration: const Duration(milliseconds: 2000),
+                              child: FilledButton(
+                                  style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(Colors.orange),
+                                  ),
+                                  onPressed: () {},
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('TARDE'),
+                                  )),
+                            ),
                           ],
                         ),
                         const SizedBox(
                           height: 20,
                         ),
                         hours.isNotEmpty
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: colors.primary),
-                                ),
-                                child: SfDateRangePicker(
-                                  initialSelectedDate: hours[0].fecha,
-                                  backgroundColor: colors.onPrimary,
-                                  onSelectionChanged: (dateRangePickerSelectionChangedArgs) {
-                                    ref
-                                        .read(avalaibleMedicalHoursProvider.notifier)
-                                        .onSelectionChanged(dateRangePickerSelectionChangedArgs, widget.idDoctor, 26, user.userId!);
-                                  },
-                                  selectionTextStyle: const TextStyle(fontSize: 20),
-                                  selectionMode: DateRangePickerSelectionMode.single,
-                                  view: DateRangePickerView.month,
-                                  selectionShape: DateRangePickerSelectionShape.rectangle,
-                                  selectionColor: Colors.green, // Color de fondo de las fechas seleccionadas
-                                  selectableDayPredicate:
-                                      // esto necesita estado y no lo esta teniendo
-                                      (date) {
-                                    if (!ref.read(medicalHoursDoctorProvider.notifier).selectedPredicatedMedicalHours(date, hours)) {
-                                      return false;
-                                    }
-                                    return true;
-                                  },
-
-                                  todayHighlightColor: colors.inversePrimary,
-                                  monthViewSettings: const DateRangePickerMonthViewSettings(
-                                    firstDayOfWeek: 1,
-                                  ),
-                                  headerStyle: DateRangePickerHeaderStyle(
-                                    backgroundColor: colors.primary,
-                                    textAlign: TextAlign.center,
-                                    textStyle: TextStyle(
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      letterSpacing: 5,
-                                      color: colors.onPrimary,
+                            ? FadeInDown(
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: hours.isNotEmpty ? Border.all(color: colors.primary) : null,
                                     ),
-                                  ),
-                                ))
+                                    child: SfDateRangePicker(
+                                      initialSelectedDate: hours[0].fecha,
+                                      backgroundColor: colors.onPrimary,
+                                      onSelectionChanged: (dateRangePickerSelectionChangedArgs) {
+                                        ref
+                                            .read(avalaibleMedicalHoursProvider.notifier)
+                                            .onSelectionChanged(dateRangePickerSelectionChangedArgs, widget.idDoctor, 26, user.userId!);
+                                      },
+                                      selectionTextStyle: const TextStyle(fontSize: 20),
+                                      selectionMode: DateRangePickerSelectionMode.single,
+                                      view: DateRangePickerView.month,
+                                      selectionShape: DateRangePickerSelectionShape.rectangle,
+                                      selectionColor: Colors.green, // Color de fondo de las fechas seleccionadas
+                                      selectableDayPredicate:
+                                          // esto necesita estado y no lo esta teniendo
+                                          (date) {
+                                        if (!ref.read(medicalHoursDoctorProvider.notifier).selectedPredicatedMedicalHours(date, hours)) {
+                                          return false;
+                                        }
+                                        return true;
+                                      },
+
+                                      todayHighlightColor: colors.inversePrimary,
+                                      monthViewSettings: const DateRangePickerMonthViewSettings(
+                                        firstDayOfWeek: 1,
+                                      ),
+                                      headerStyle: DateRangePickerHeaderStyle(
+                                        backgroundColor: colors.primary,
+                                        textAlign: TextAlign.center,
+                                        textStyle: TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 15,
+                                          letterSpacing: 5,
+                                          color: colors.onPrimary,
+                                        ),
+                                      ),
+                                    )),
+                              )
                             : const Padding(
                                 padding: EdgeInsets.all(110),
                                 child: SizedBox(
@@ -221,19 +232,24 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           children: [
                             Container(
                                 padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(10)),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.orange),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 child: ref.read(avalaibleMedicalHoursProvider.notifier).getRangeHurs() != ''
-                                    ? Column(
-                                        children: [
-                                          const Text(
-                                            'Agenda',
-                                            style: TextStyle(color: Colors.orange),
-                                          ),
-                                          Text(
-                                            ref.read(avalaibleMedicalHoursProvider.notifier).getRangeHurs(),
-                                            style: const TextStyle(color: Colors.orange),
-                                          )
-                                        ],
+                                    ? FadeInLeft(
+                                        child: Column(
+                                          children: [
+                                            const Text(
+                                              'Agenda',
+                                              style: TextStyle(color: Colors.orange),
+                                            ),
+                                            Text(
+                                              ref.read(avalaibleMedicalHoursProvider.notifier).getRangeHurs(),
+                                              style: const TextStyle(color: Colors.orange),
+                                            )
+                                          ],
+                                        ),
                                       )
                                     : const Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 61, vertical: 2.3),
@@ -242,47 +258,49 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                           strokeWidth: 2,
                                         ),
                                       )),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    color: colors.inversePrimary,
-                                    iconSize: 30,
-                                    onPressed: () {
-                                      ref.read(avalaibleMedicalHoursProvider.notifier).showPrevious();
-                                    },
-                                    icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-                                ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().isNotEmpty
-                                    ? SizedBox(
-                                        height: 45,
-                                        width: 80,
-                                        child: ListView.builder(
-                                          itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length > 1
-                                              ? 1
-                                              : ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
-                                          itemBuilder: (context, index) {
-                                            final hour = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
+                            FadeInRight(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      color: colors.inversePrimary,
+                                      iconSize: 30,
+                                      onPressed: () {
+                                        ref.read(avalaibleMedicalHoursProvider.notifier).showPrevious();
+                                      },
+                                      icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+                                  ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().isNotEmpty
+                                      ? SizedBox(
+                                          height: 45,
+                                          width: 80,
+                                          child: ListView.builder(
+                                            itemCount: ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length > 1
+                                                ? 1
+                                                : ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours().length,
+                                            itemBuilder: (context, index) {
+                                              final hour = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
 
-                                            final hourBlock = '${hour.horaDesdeText.split(':')[0]}:00';
+                                              final hourBlock = '${hour.horaDesdeText.split(':')[0]}:00';
 
-                                            return Text(hourBlock,
-                                                style: textStyleNameDoctor!.copyWith(color: colors.inversePrimary, fontSize: 30));
-                                          },
+                                              return Text(hourBlock,
+                                                  style: textStyleNameDoctor!.copyWith(color: colors.inversePrimary, fontSize: 30));
+                                            },
+                                          ),
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: colors.inversePrimary,
+                                          strokeWidth: 2,
                                         ),
-                                      )
-                                    : CircularProgressIndicator(
-                                        color: colors.inversePrimary,
-                                        strokeWidth: 2,
-                                      ),
-                                IconButton(
-                                    color: colors.inversePrimary,
-                                    iconSize: 30,
-                                    onPressed: () {
-                                      ref.read(avalaibleMedicalHoursProvider.notifier).showNext();
-                                    },
-                                    icon: const Icon(Icons.arrow_forward_ios_rounded)),
-                              ],
+                                  IconButton(
+                                      color: colors.inversePrimary,
+                                      iconSize: 30,
+                                      onPressed: () {
+                                        ref.read(avalaibleMedicalHoursProvider.notifier).showNext();
+                                      },
+                                      icon: const Icon(Icons.arrow_forward_ios_rounded)),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -307,12 +325,15 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                             child: TextButton(
                                 onPressed: item.nombrePaciente == 'Ocupado' ? null : () {},
                                 child: hours.isNotEmpty
-                                    ? Text(
-                                        item.horaDesdeText,
-                                        style: textStyleNameDoctor!.copyWith(
-                                            color: item.nombrePaciente == 'Ocupado' ? Colors.grey : colors.primary,
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w600),
+                                    ? FadeInUp(
+                                        duration: const Duration(milliseconds: 1400),
+                                        child: Text(
+                                          item.horaDesdeText,
+                                          style: textStyleNameDoctor!.copyWith(
+                                              color: item.nombrePaciente == 'Ocupado' ? Colors.grey : colors.primary,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       )
                                     : const CircularProgressIndicator(
                                         strokeWidth: 2,
@@ -391,6 +412,10 @@ class _BoxCheckDoctor extends ConsumerWidget {
     // }
 
     return Builder(builder: (context) {
+      showToastMessage(String message, Color color) {
+        return Fluttertoast.showToast(msg: message);
+      }
+
       return Column(
         // Wrap the Expanded in a Column
         children: [
@@ -553,7 +578,16 @@ otra persona que no sea el titular
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          ref.read(toastCustomProvider.notifier).showToastMessage(
+                                'Debes aceptar términos y condiciones',
+                                Colors.red.shade500,
+                                context,
+                                Icons.warning_amber_rounded,
+                                Colors.white,
+                                ToastGravity.BOTTOM,
+                              );
+                        },
                         child: const Text('Aceptar'),
                       ),
                     )
