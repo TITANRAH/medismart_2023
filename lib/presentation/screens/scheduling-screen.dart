@@ -6,6 +6,7 @@ import 'package:medismart_2023/config/utils/utils.dart';
 import 'package:medismart_2023/domain/entities/avalaible-medical-hours-entity/avalaible_medical_hours_entity.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
 import 'package:medismart_2023/domain/entities/user-entity/user.dart';
+import 'package:medismart_2023/presentation/providers/checkbox_provider/checkbox_provider.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -362,7 +363,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
   }
 }
 
-class _BoxCheckDoctor extends StatelessWidget {
+class _BoxCheckDoctor extends ConsumerWidget {
   const _BoxCheckDoctor({
     required this.colors,
     required this.urlPhoto,
@@ -378,8 +379,17 @@ class _BoxCheckDoctor extends StatelessWidget {
   final MedicalDirectory doctor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final textCheck = Theme.of(context).textTheme.labelMedium;
+    final bool checkOne = ref.watch(checkOneProvider);
+    final bool checkTwo = ref.watch(checkTwoProvider);
+    final bool checkThree = ref.watch(checkThreeProvider);
+    final bool checkAll = ref.watch(checkAllProvider);
+
+    // void onChangedChedkOne(bool value) {
+    //   ref.watch(avalaibleMedicalHoursProvider.notifier).changeCheckBoolOne();
+    // }
+
     return Builder(builder: (context) {
       return Column(
         // Wrap the Expanded in a Column
@@ -451,8 +461,10 @@ class _BoxCheckDoctor extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Checkbox(
-                          value: true,
-                          onChanged: (value) {},
+                          value: checkAll,
+                          onChanged: (value) {
+                            ref.read(checkAllProvider.notifier).changeCheckBoolAll();
+                          },
                         ),
                         Text(
                           'Aceptar Todo',
@@ -465,8 +477,11 @@ class _BoxCheckDoctor extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Checkbox(
-                          value: true,
-                          onChanged: (value) {},
+                          // key: UniqueKey(),
+                          value: checkOne,
+                          onChanged: (value) {
+                            ref.read(checkOneProvider.notifier).changeCheckBoolOne();
+                          },
                         ),
                         SizedBox(
                           width: 300,
@@ -491,8 +506,10 @@ Conoce tus derechos y deberes para la consulta Tele-medica.
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Checkbox(
-                          value: true,
-                          onChanged: (value) {},
+                          value: checkTwo,
+                          onChanged: (value) {
+                            ref.read(checkTwoProvider.notifier).changeCheckBoolTwo();
+                          },
                         ),
                         Text(
                           '''
@@ -509,8 +526,10 @@ He leído y acepto el consentimiento informado
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Checkbox(
-                          value: true,
-                          onChanged: (value) {},
+                          value: checkThree,
+                          onChanged: (value) {
+                            ref.read(checkThreeProvider.notifier).changeCheckBoolThree();
+                          },
                         ),
                         Text(
                           '''

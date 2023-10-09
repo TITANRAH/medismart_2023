@@ -14,10 +14,8 @@ class MedicalHoursDoctor extends _$MedicalHoursDoctor {
     return [];
   }
 
-  Future<void> getMedicalHours(idMedico, fechaSeleccion, idConvenio,
-      fechaSeleccionEstatica, idPaciente) async {
-    final hours = await impl.getMedicalHours(idMedico, fechaSeleccion,
-        idConvenio, fechaSeleccionEstatica, idPaciente);
+  Future<void> getMedicalHours(idMedico, fechaSeleccion, idConvenio, fechaSeleccionEstatica, idPaciente) async {
+    final hours = await impl.getMedicalHours(idMedico, fechaSeleccion, idConvenio, fechaSeleccionEstatica, idPaciente);
 
     if (hours.isNotEmpty) {
       state = hours.toSet().toList();
@@ -32,8 +30,7 @@ class MedicalHoursDoctor extends _$MedicalHoursDoctor {
     return state;
   }
 
- bool selectedPredicatedMedicalHours(
-      DateTime date, List<MedicalHours> hours)  {
+  bool selectedPredicatedMedicalHours(DateTime date, List<MedicalHours> hours) {
     for (var h in hours) {
       if (date == h.fecha) {
         return true;

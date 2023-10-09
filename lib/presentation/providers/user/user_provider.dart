@@ -23,7 +23,7 @@ class UserActive extends _$UserActive {
     print('USER DESDE PROVIDER $state');
   }
 
-   returnUser() {
+  returnUser() {
     return state;
   }
 }
@@ -57,6 +57,4 @@ class IsLoading extends _$IsLoading {
   void isFalse() {
     state = false;
   }
-
- 
 }

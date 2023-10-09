@@ -55,10 +55,7 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
     return currentValueEspecialitie;
   }
 
-  filteredDoctors(String currentValue, int codeEspecialitie, int userId, String typeService, int idClient
-      // llamar al tipo de servicio
-      ) {
-    // Aplica el filtrado a la lista de médicos
+  filteredDoctors(String currentValue, int codeEspecialitie, int userId, String typeService, int idClient) {
     List<MedicalDirectory> filteredDirectoryDoctors = state.where((doc) {
       return doc.codigoEspecialidad == codeEspecialitie;
     }).toList();
@@ -67,13 +64,7 @@ class MedicalDirectoryDoctors extends _$MedicalDirectoryDoctors {
       return state = filteredDirectoryDoctors;
     } else {
       state = [];
-      Future.delayed(
-          const Duration(seconds: 2),
-          () => {
-                // PARAMETRIZAR ME TRAERA SIEMPRE LOS DE O
-                // ARREGLAR TEXTO
-                getMedicalDirectory(userId, idClient, typeService)
-              });
+      Future.delayed(const Duration(seconds: 2), () => {getMedicalDirectory(userId, idClient, typeService)});
     }
   }
 

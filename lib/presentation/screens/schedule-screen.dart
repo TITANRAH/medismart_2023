@@ -239,14 +239,13 @@ class _BoxDoctor extends StatelessWidget {
                                             ? Image.network(
                                                 urlPhoto + doctor.fotoPerfil!,
                                                 fit: BoxFit.cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
-                                                width: 100, // Ancho de la imagen dentro del círculo
-                                                height: 100, // Altura de la imagen dentro del círculo
+                                                width: 100, 
+                                                height: 100, 
                                               )
                                             : Image.asset(
                                                 './assets/img/loading.gif',
-                                                fit: BoxFit.cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
-                                                width: 100, // Ancho de la imagen dentro del círculo
-                                                height: 100, // Altura de la imagen dentro del círculo
+                                                fit: BoxFit.cover, 
+                                                width: 100, 
                                               )))),
                             const SizedBox(
                               width: 20,
@@ -278,7 +277,7 @@ class _BoxDoctor extends StatelessWidget {
                           child: FilledButton(
                               style: FilledButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8), // Establece el radio del borde en cero
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
                               onPressed: () {

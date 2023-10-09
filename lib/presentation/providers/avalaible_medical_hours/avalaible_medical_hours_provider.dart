@@ -13,7 +13,7 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   String fechaSelect = '';
   int startIndex = 0;
   int endIndex = 3;
-  // bool isLoading = false;
+
   List<AvalaibleMedicalHoursEntity> hoursItemCount = [];
 
   @override
@@ -70,11 +70,8 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   hoursSelectedDate(List<AvalaibleMedicalHoursEntity> hours, String fechaSelected) {
     print('fechaSelected $fechaSelected');
     print('lista de horas ${hours[0].fechaHora}');
-
     List<AvalaibleMedicalHoursEntity> hoursDate = hours.where((h) => h.fechaHora.toString().split(' ')[0] == fechaSelected).toList();
-
     print('horas para esa la fecha $fechaSelected ${hoursDate.length}');
-
     return hoursDate;
   }
 
@@ -85,12 +82,8 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     if (availableHours.isEmpty) {
       return [];
     }
-
     startIndex = startIndex.clamp(0, availableHours.length - 1).toInt();
-
     var endIndex = (startIndex + 3).clamp(0, availableHours.length - 1).toInt();
-
-    // Ordena las horas por la primera hora antes de devolverlas
     final orderedHours = availableHours.sublist(startIndex, endIndex + 1)..sort((a, b) => a.horaDesde.compareTo(b.horaDesde));
 
     return orderedHours;
@@ -120,15 +113,10 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   String getRangeHurs() {
     List<AvalaibleMedicalHoursEntity> rangeHours = state;
     if (rangeHours.isEmpty) {
-      return ""; // Maneja el caso de que no haya horas disponibles
+      return "";
     }
-
-    // Asegura que las horas estén ordenadas cronológicamente
-
-    final primeraHora = rangeHours.first.horaDesdeText; // Obtiene la primera hora
-    final ultimaHora = rangeHours.last.horaDesdeText; // Obtiene la última hora
-
-    // Construye el mensaje de rango horario
+    final primeraHora = rangeHours.first.horaDesdeText;
+    final ultimaHora = rangeHours.last.horaDesdeText;
     final mensaje = "De ${primeraHora}hrs. a ${ultimaHora}hrs.";
 
     return mensaje;
