@@ -340,7 +340,9 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                                   ? Colors.grey
                                                   : item.horaDesdeText == hourSelected
                                                       ? Colors.orange
-                                                      : colors.primary,
+                                                      : item.nombrePaciente == 'Ocupado'
+                                                          ? Colors.grey
+                                                          : colors.primary,
                                               fontSize: 25,
                                               fontWeight: FontWeight.w600),
                                         ),

@@ -6,7 +6,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 part 'avalaible_medical_hours_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   final impl = AvalaibleMedicalHoursRepositoryImpl(AvalaibleMedicalHoursDatasource());
 
@@ -28,9 +28,10 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     int idConvenio,
     int idPaciente,
   ) {
+    hourSelected = '';
     fechaSelect = dateRangePickerSelectionChangedArgs.value.toString().split(' ')[0];
 
-    print('enabledDatesBySelectedHour $fechaSelect');
+    // print('enabledDatesBySelectedHour $fechaSelect');
 
     getAvalaibleHours(fechaSelect, idMedico, idConvenio, idPaciente);
   }
@@ -41,9 +42,9 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     int idConvenio,
     int idPaciente,
   ) async {
-    print('fecha desde provider getAvalaibleHours $fecha');
-    print('idMedico getAvalaibleHours $idMedico');
-    print('idPaciente getAvalaibleHours $idPaciente');
+    // print('fecha desde provider getAvalaibleHours $fecha');
+    // print('idMedico getAvalaibleHours $idMedico');
+    // print('idPaciente getAvalaibleHours $idPaciente');
     // isLoading = true;
     startIndex = 0;
     endIndex = 3;
@@ -65,14 +66,14 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
       state = [];
     }
 
-    print('state de Avalaibles provider ${state.length} ');
+    // print('state de Avalaibles provider ${state.length} ');
   }
 
   hoursSelectedDate(List<AvalaibleMedicalHoursEntity> hours, String fechaSelected) {
-    print('fechaSelected $fechaSelected');
-    print('lista de horas ${hours[0].fechaHora}');
+    // print('fechaSelected $fechaSelected');
+    // print('lista de horas ${hours[0].fechaHora}');
     List<AvalaibleMedicalHoursEntity> hoursDate = hours.where((h) => h.fechaHora.toString().split(' ')[0] == fechaSelected).toList();
-    print('horas para esa la fecha $fechaSelected ${hoursDate.length}');
+    // print('horas para esa la fecha $fechaSelected ${hoursDate.length}');
     return hoursDate;
   }
 

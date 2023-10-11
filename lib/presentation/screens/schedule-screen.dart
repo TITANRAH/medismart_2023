@@ -456,8 +456,7 @@ class _SwiperCustom extends StatelessWidget {
         viewportFraction: 1,
         scale: 0.9,
         itemBuilder: (BuildContext context, int index) {
-          // Aquí puedes cargar las imágenes desde tu lista de imágenes
-          // Por ejemplo, puedes usar NetworkImage o AssetImage para cargar imágenes desde una URL o un archivo local.
+         
           return Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Image.asset(
