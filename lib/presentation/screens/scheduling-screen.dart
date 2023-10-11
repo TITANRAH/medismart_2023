@@ -61,6 +61,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
     final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
     final hours = ref.watch(medicalHoursDoctorProvider);
     ref.watch(avalaibleMedicalHoursProvider);
+    final String hourSelected = ref.read(avalaibleMedicalHoursProvider.notifier).hourSelected;
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavigation(),
@@ -321,16 +322,25 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                           final AvalaibleMedicalHoursEntity item = ref.read(avalaibleMedicalHoursProvider.notifier).visibleHours()[index];
 
                           return SizedBox(
-                            width: 100, // Establece el ancho deseado
+                            width: 98, // Establece el ancho deseado
                             child: TextButton(
-                                onPressed: item.nombrePaciente == 'Ocupado' ? null : () {},
+                                onPressed: item.nombrePaciente == 'Ocupado'
+                                    ? null
+                                    : () {
+                                        ref.read(avalaibleMedicalHoursProvider.notifier).selectedHourScheduling(item.horaDesdeText);
+                                        setState(() {});
+                                      },
                                 child: hours.isNotEmpty
                                     ? FadeInUp(
                                         duration: const Duration(milliseconds: 1400),
                                         child: Text(
                                           item.horaDesdeText,
                                           style: textStyleNameDoctor!.copyWith(
-                                              color: item.nombrePaciente == 'Ocupado' ? Colors.grey : colors.primary,
+                                              color: item.nombrePaciente == 'Ocupado'
+                                                  ? Colors.grey
+                                                  : item.horaDesdeText == hourSelected
+                                                      ? Colors.orange
+                                                      : colors.primary,
                                               fontSize: 25,
                                               fontWeight: FontWeight.w600),
                                         ),
@@ -412,10 +422,6 @@ class _BoxCheckDoctor extends ConsumerWidget {
     // }
 
     return Builder(builder: (context) {
-      showToastMessage(String message, Color color) {
-        return Fluttertoast.showToast(msg: message);
-      }
-
       return Column(
         // Wrap the Expanded in a Column
         children: [
@@ -579,14 +585,18 @@ otra persona que no sea el titular
                           ),
                         ),
                         onPressed: () {
-                          ref.read(toastCustomProvider.notifier).showToastMessage(
-                                'Debes aceptar términos y condiciones',
-                                Colors.red.shade500,
-                                context,
-                                Icons.warning_amber_rounded,
-                                Colors.white,
-                                ToastGravity.BOTTOM,
-                              );
+                          if (!checkOne || !checkTwo || !checkThree) {
+                            ref.read(toastCustomProvider.notifier).showToastMessage(
+                                  'Debes aceptar términos y condiciones',
+                                  Colors.red.shade500,
+                                  context,
+                                  Icons.warning_amber_rounded,
+                                  Colors.white,
+                                  ToastGravity.BOTTOM,
+                                );
+                          } else {
+                            return;
+                          }
                         },
                         child: const Text('Aceptar'),
                       ),

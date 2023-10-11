@@ -13,7 +13,8 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   String fechaSelect = '';
   int startIndex = 0;
   int endIndex = 3;
-
+  bool hourStateSelected = false;
+  String hourSelected = '';
   List<AvalaibleMedicalHoursEntity> hoursItemCount = [];
 
   @override
@@ -120,5 +121,18 @@ class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
     final mensaje = "De ${primeraHora}hrs. a ${ultimaHora}hrs.";
 
     return mensaje;
+  }
+
+  void selectedHourScheduling(String hour) {
+    print('entro a selectedHpursScheduling $hour');
+    final hourState = state.firstWhere((h) => h.horaDesdeText == hour);
+    print('entro a selectedHpursScheduling $hourState');
+    if (hourState.horaDesdeText != '') {
+      hourSelected = hourState.horaDesdeText;
+    }
+  }
+
+  setHourState() {
+    return hourSelected;
   }
 }
