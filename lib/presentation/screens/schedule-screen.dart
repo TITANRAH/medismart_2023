@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:medismart_2023/config/constants/env.dart';
 import 'package:medismart_2023/domain/entities/especialitie/especialitie.dart';
 import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
+import 'package:medismart_2023/domain/entities/scheduling-screen-arguments/scheduling_screen_arguments.dart';
 import 'package:medismart_2023/presentation/providers/providers.dart';
 import 'package:medismart_2023/presentation/widgets/widgets.dart';
 
@@ -26,6 +27,7 @@ class ScheduleScreen extends ConsumerStatefulWidget {
 class ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   @override
   void didChangeDependencies() {
+    print('tipo servicio ${widget.tipoServicio}');
     final user = ref.watch(userActiveProvider);
 
     ref
@@ -239,13 +241,13 @@ class _BoxDoctor extends StatelessWidget {
                                             ? Image.network(
                                                 urlPhoto + doctor.fotoPerfil!,
                                                 fit: BoxFit.cover, // Puedes ajustar la forma en que la imagen se ajusta dentro del círculo
-                                                width: 100, 
-                                                height: 100, 
+                                                width: 100,
+                                                height: 100,
                                               )
                                             : Image.asset(
                                                 './assets/img/loading.gif',
-                                                fit: BoxFit.cover, 
-                                                width: 100, 
+                                                fit: BoxFit.cover,
+                                                width: 100,
                                               )))),
                             const SizedBox(
                               width: 20,
@@ -281,7 +283,10 @@ class _BoxDoctor extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                context.push('/scheduling', extra: doctor.idMedico);
+                                context.push(
+                                  '/scheduling',
+                                  extra: SchedulingScreenArguments(idDoctor: doctor.idMedico, isEdit: false),
+                                );
                               },
                               child: const Text('AGENDAR')),
                         )
@@ -456,7 +461,6 @@ class _SwiperCustom extends StatelessWidget {
         viewportFraction: 1,
         scale: 0.9,
         itemBuilder: (BuildContext context, int index) {
-         
           return Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
             child: Image.asset(

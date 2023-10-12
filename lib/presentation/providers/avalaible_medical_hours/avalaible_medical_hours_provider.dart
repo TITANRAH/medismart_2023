@@ -6,7 +6,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 part 'avalaible_medical_hours_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class AvalaibleMedicalHours extends _$AvalaibleMedicalHours {
   final impl = AvalaibleMedicalHoursRepositoryImpl(AvalaibleMedicalHoursDatasource());
 

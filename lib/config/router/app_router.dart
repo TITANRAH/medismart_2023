@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:medismart_2023/domain/entities/medical-directory/medical_directory.dart';
+import 'package:medismart_2023/domain/entities/scheduling-screen-arguments/scheduling_screen_arguments.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../presentation/screens/screens.dart';
@@ -24,22 +24,22 @@ GoRouter appRouter(AppRouterRef ref) {
       name: ScheduleScreen.name,
       // builder: (context, state) => const ScheduleScreen(),
       builder: (context, state) {
-         final tipoServicio = state.extra! as String?;
-            return ScheduleScreen(
-              tipoServicio: tipoServicio,
-            );
+        final tipoServicio = state.extra! as String?;
+        return ScheduleScreen(
+          tipoServicio: tipoServicio,
+        );
       },
     ),
     GoRoute(
       path: '/scheduling',
       name: SchedulingScreen.name,
-      // builder: (context, state) => const ScheduleScreen(),
       builder: (context, state) {
-         final idDoctor = state.extra! as int;
-            return SchedulingScreen(
-              idDoctor: idDoctor,
-            );
+        final args = state.extra! as SchedulingScreenArguments;
+        return SchedulingScreen(
+          idDoctor: args.idDoctor!,
+          isEdit: args.isEdit!,
+        );
       },
-    ),
+    )
   ]);
 }

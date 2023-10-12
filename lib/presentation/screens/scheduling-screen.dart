@@ -18,11 +18,13 @@ class SchedulingScreen extends ConsumerStatefulWidget {
   static const name = 'scheduling';
   late User user;
   final int idDoctor;
+  final bool isEdit;
   MedicalDirectory? doctor;
 
   SchedulingScreen({
     super.key,
     this.doctor,
+    required this.isEdit,
     required this.idDoctor,
   });
 
@@ -42,6 +44,8 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
 
     widget.doctor = ref.read(medicalDirectoryDoctorsProvider.notifier).filteredUniqueDoc(widget.idDoctor);
 
+    print(' doctor ${widget.doctor!.idMedico}');
+
     ref
         .read(medicalHoursDoctorProvider.notifier)
         .getMedicalHours(widget.idDoctor, widget.doctor!.fechaText, 26, widget.doctor!.fechaText, user.idCliente);
@@ -60,7 +64,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
     final textStyleEspecialitie = Theme.of(context).textTheme.titleSmall;
     final textStyleNameDoctor = Theme.of(context).textTheme.titleMedium;
     final hours = ref.watch(medicalHoursDoctorProvider);
-    ref.watch(avalaibleMedicalHoursProvider);
+    final medicalHours = ref.watch(avalaibleMedicalHoursProvider);
     final String hourSelected = ref.read(avalaibleMedicalHoursProvider.notifier).hourSelected;
 
     return Scaffold(
@@ -328,6 +332,22 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                                     ? null
                                     : () {
                                         ref.read(avalaibleMedicalHoursProvider.notifier).selectedHourScheduling(item.horaDesdeText);
+
+                                        // print('idBloque hora desde List:  ${item.idBloqueHora}');
+                                        // print('idMedicoHora   desde List:  ${item.idMedicoHora}');
+                                        // print('idMedico desde List:  ${item.idMedico}');
+                                        // print('idMedico desde List:  ${item.fechaText}');
+
+                                        print('idMedicoHora desde List: ${item.idMedicoHora}');
+                                        print('id bloque hora desde List: ${item.idBloqueHora}');
+                                        print('fecha desde List:${item.fechaText}');
+                                        print('idProfesional: desde List${item.idMedico}');
+                                        print('nombre medico: desde List${item.nombreMedico}');
+                                        print('valor atencion:desde List ${item.valorAtencion}');
+                                        print('especialidad:desde List ${item.especialidad}');
+                                        print('token:desde List ${user.token}');
+                                        print('id usuario: ${user.userId}');
+                                        print('cantidad de horas desde List${medicalHours.length}');
                                         setState(() {});
                                       },
                                 child: hours.isNotEmpty
@@ -367,6 +387,7 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
                   urlPhoto: urlPhoto,
                   textStyleNameDoctor: textStyleNameDoctor,
                   textStyleEspecialitie: textStyleEspecialitie,
+                  isEdit: widget.isEdit,
                 ),
               ),
             const SizedBox(
@@ -397,19 +418,21 @@ class SchedulingScreenState extends ConsumerState<SchedulingScreen> {
 }
 
 class _BoxCheckDoctor extends ConsumerWidget {
+  final ColorScheme colors;
+  final String urlPhoto;
+  final TextStyle? textStyleNameDoctor;
+  final TextStyle? textStyleEspecialitie;
+  final MedicalDirectory doctor;
+  final bool isEdit;
+
   const _BoxCheckDoctor({
     required this.colors,
     required this.urlPhoto,
     required this.doctor,
     required this.textStyleNameDoctor,
     required this.textStyleEspecialitie,
+    required this.isEdit,
   });
-
-  final ColorScheme colors;
-  final String urlPhoto;
-  final TextStyle? textStyleNameDoctor;
-  final TextStyle? textStyleEspecialitie;
-  final MedicalDirectory doctor;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -600,7 +623,7 @@ otra persona que no sea el titular
                             return;
                           }
                         },
-                        child: const Text('Aceptar'),
+                        child: Text(isEdit ? 'Editar' : 'Aceptar'),
                       ),
                     )
                   ],
